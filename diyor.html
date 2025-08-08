@@ -1,71 +1,168 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="uz">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>PROSTAFF - Ishchi platformasi</title>
+  <title>PROSTAFF · Tez buyurtma sahifasi</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background: #f4f4f4;
+    :root { --blue:#0b5ed7; --bg:#f6f7fb; --text:#1f2937; }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--text)}
+    header{background:var(--blue);color:#fff;padding:18px}
+    header .wrap{max-width:980px;margin:0 auto;display:flex;align-items:center;justify-content:space-between}
+    nav a{color:#fff;text-decoration:none;margin:0 10px;font-weight:600;opacity:.95}
+    nav a:hover{opacity:1;text-decoration:underline}
+    .container{max-width:980px;margin:24px auto;padding:0 16px}
+    .hero{background:#fff;border-radius:14px;padding:22px 20px;box-shadow:0 6px 18px rgba(0,0,0,.06)}
+    .hero h1{margin:0 0 10px 0;color:var(--blue)}
+    .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-top:18px}
+    @media (min-width:720px){ .grid{grid-template-columns:repeat(4,1fr)} }
+    .card{background:#fff;border-radius:12px;padding:16px;text-align:center;box-shadow:0 4px 12px rgba(0,0,0,.05)}
+    .card .icon{font-size:28px}
+    .card h4{margin:8px 0 0 0}
+    .form{background:#fff;border-radius:14px;padding:18px;margin-top:18px;box-shadow:0 6px 18px rgba(0,0,0,.06)}
+    .form h2{margin:0 0 10px 0;color:var(--blue)}
+    .row{display:grid;grid-template-columns:1fr;gap:12px}
+    @media (min-width:720px){ .row{grid-template-columns:1fr 1fr} }
+    label{display:block;font-size:14px;margin:6px 0}
+    input,select,textarea{
+      width:100%;padding:12px;border:1px solid #d7dbe3;border-radius:10px;background:#fbfbfc;font-size:15px
     }
-    header {
-      background: #004aad;
-      color: white;
-      padding: 20px;
-      text-align: center;
-    }
-    section {
-      padding: 30px;
-      background: white;
-      margin: 20px;
-      border-radius: 10px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
-    h2 {
-      color: #004aad;
-    }
-    footer {
-      text-align: center;
-      padding: 20px;
-      background: #eee;
-      font-size: 14px;
-      color: #333;
-    }
+    textarea{min-height:92px;resize:vertical}
+    .btn{display:inline-block;background:var(--blue);color:#fff;border:none;border-radius:12px;
+      padding:12px 18px;font-size:16px;font-weight:700;cursor:pointer}
+    .btn:active{transform:scale(.99)}
+    .muted{font-size:13px;color:#6b7280;margin-top:10px}
+    footer{padding:18px;text-align:center;color:#6b7280}
   </style>
 </head>
 <body>
+  <header>
+    <div class="wrap">
+      <strong>PROSTAFF</strong>
+      <nav>
+        <a href="./index.html">Bosh sahifa</a>
+        <a href="./diyor.html">Tez buyurtma</a>
+      </nav>
+    </div>
+  </header>
 
-<header>
-  <h1>PROSTAFF</h1>
-  <p>Kunlik va doimiy ishchilar uchun platforma</p>
-</header>
+  <div class="container">
+    <section class="hero">
+      <h1>Tez buyurtma — 3 daqiqada ishchi chaqiring</h1>
+      <p>Tozalash, bog‘ ishlari, uy xizmati yoki servis xodimi kerakmi? Pastdagi formani to‘ldiring —
+         PROSTAFF jamoasi siz bilan darhol bog‘lanadi.</p>
 
-<section>
-  <h2>Biz haqimizda</h2>
-  <p>PROSTAFF – bu ishchilar va ish beruvchilarni xavfsiz va tezkor ulovchi platforma. Biz sizga toza va ishonchli xizmat ko‘rsatamiz.</p>
-</section>
+      <div class="grid">
+        <div class="card"><div class="icon">🧹</div><h4>Tozalash</h4></div>
+        <div class="card"><div class="icon">🌿</div><h4>Bog‘ ishlari</h4></div>
+        <div class="card"><div class="icon">🏠</div><h4>Uy xizmati</h4></div>
+        <div class="card"><div class="icon">🛠️</div><h4>Xizmat ko‘rsatish</h4></div>
+      </div>
+    </section>
 
-<section>
-  <h2>Xizmatlar</h2>
-  <ul>
-    <li>Yuridik shaxslar uchun tozalovchilar</li>
-    <li>Jismoniy shaxslar uchun yuk tashish, bog‘ ishlari</li>
-    <li>Oylik obuna asosidagi xizmatlar</li>
-  </ul>
-</section>
+    <section class="form">
+      <h2>Buyurtma formasi</h2>
+      <div class="row">
+        <div>
+          <label>Ismingiz</label>
+          <input id="name" placeholder="Dilshod / Aziza" />
+        </div>
+        <div>
+          <label>Telefon raqam</label>
+          <input id="phone" placeholder="+998 90 123 45 67" />
+        </div>
+      </div>
 
-<section>
-  <h2>Biz bilan aloqa</h2>
-  <p>📞 +998 (50) 101-76-95</p>
-  <p>📧 prostaff.uz@gmail.com</p>
-</section>
+      <div class="row">
+        <div>
+          <label>Xizmat turi</label>
+          <select id="service">
+            <option value="Tozalash">Tozalash</option>
+            <option value="Bog‘ ishlari">Bog‘ ishlari</option>
+            <option value="Uy xizmati">Uy xizmati</option>
+            <option value="Xizmat ko‘rsatish">Xizmat ko‘rsatish</option>
+          </select>
+        </div>
+        <div>
+          <label>Sanasi</label>
+          <input id="date" type="date" />
+        </div>
+      </div>
 
-<footer>
-  &copy; 2025 PROSTAFF. Barcha huquqlar himoyalangan.
-</footer>
+      <div class="row">
+        <div>
+          <label>Manzil</label>
+          <input id="address" placeholder="Shahar, ko‘cha, uy..." />
+        </div>
+        <div>
+          <label>Budjet (ixtiyoriy)</label>
+          <input id="budget" placeholder="masalan: 150 000 so‘m" />
+        </div>
+      </div>
 
+      <label>Qo‘shimcha izoh</label>
+      <textarea id="note" placeholder="Masalan: 2 xodim, ertalab soat 9:00, ofis 3-qavat..."></textarea>
+
+      <div style="margin-top:14px;display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn" onclick="sendToWhatsApp()">WhatsApp orqali yuborish</button>
+        <button class="btn" onclick="sendToTelegram()">Telegram orqali yuborish</button>
+        <a id="mailto" class="btn" href="#">Email (Gmail) orqali</a>
+      </div>
+      <p class="muted">*Yuborishda hech narsa o‘rnatilmaydi — faqat tayyor xabar ochiladi, siz tasdiqlab yuborasiz.</p>
+    </section>
+  </div>
+
+  <footer>© 2025 PROSTAFF. Barcha huquqlar himoyalangan.</footer>
+
+  <script>
+    const phoneAdmin = "998501017695"; // PROSTAFF raqami (o'zgartirishingiz mumkin)
+
+    function makeMessage() {
+      const name = document.getElementById('name').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      const service = document.getElementById('service').value;
+      const date = document.getElementById('date').value;
+      const address = document.getElementById('address').value.trim();
+      const budget = document.getElementById('budget').value.trim();
+      const note = document.getElementById('note').value.trim();
+
+      const text =
+        `PROSTAFF buyurtma:%0A` +
+        `Ism: ${name}%0A` +
+        `Tel: ${phone}%0A` +
+        `Xizmat: ${service}%0A` +
+        `Sana: ${date}%0A` +
+        `Manzil: ${address}%0A` +
+        `Budjet: ${budget}%0A` +
+        `Izoh: ${note}`;
+
+      // email linkini yangilab turamiz
+      const mail = `mailto:prostaff.uz@gmail.com?subject=PROSTAFF%20buyurtma&body=${text}`;
+      document.getElementById('mailto').href = mail;
+
+      return text;
+    }
+
+    function sendToWhatsApp() {
+      const text = makeMessage();
+      const url = `https://wa.me/${phoneAdmin}?text=${text}`;
+      window.open(url, "_blank");
+    }
+
+    function sendToTelegram() {
+      const text = makeMessage();
+      // telegram me link: username o'rniga bot yoki user qo'ying (hozir umumiy share)
+      const url = `https://t.me/share/url?url=&text=${text}`;
+      window.open(url, "_blank");
+    }
+
+    // Mail havolasini formdagi o'zgarishlarga bog'lash
+    ['name','phone','service','date','address','budget','note'].forEach(id=>{
+      const el=document.getElementById(id);
+      if(el){el.addEventListener('input', makeMessage);}
+    });
+    makeMessage();
+  </script>
 </body>
 </html>
