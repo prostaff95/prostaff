@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>PROSTAFF · Admin Panel (Demo)</title>
+<style>
+  :root { --blue:#0b5ed7; --bg:#f6f8fc; --card:#fff; --muted:#6b7280; --shadow:0 10px 24px rgba(2,33,86,.08); }
+  *{box-sizing:border-box} body{margin:0;font-family:system-ui,Segoe UI,Arial,sans-serif;background:var(--bg)}
+  header{background:linear-gradient(90deg,#0b5ed7,#0a4bb0);color:#fff;padding:14px 16px;display:flex;justify-content:space-between;align-items:center}
+  header a{color:#fff;text-decoration:none;border:1px solid #ffffff33;padding:8px 10px;border-radius:10px}
+  .wrap{max-width:1100px;margin:16px auto;padding:0 16px}
+  .card{background:var(--card);border-radius:16px;box-shadow:var(--shadow);padding:16px;margin-bottom:14px}
+  .tabs{display:flex;gap:8px;margin-bottom:10px}
+  .tab{background:#eef2ff;color:#0b47a1;border:1px solid #cdd8ff;padding:8px 12px;border-radius:10px;cursor:pointer;font-weight:700}
+  .tab.active{background:#dbe7ff}
+  form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  form .full{grid-column:1/-1}
+  input,select,textarea{width:100%;padding:10px;border:1px solid #d8dbe3;border-radius:10px;background:#fbfbfc}
+  table{width:100%;border-collapse:separate;border-spacing:0 8px}
+  th,td{text-align:left;padding:10px;background:#fff}
+  th{color:#374151}
+  tr{box-shadow:0 4px 12px rgba(2,33,86,.06);border-radius:10px}
+  .btn{background:var(--blue);color:#fff;border:none;border-radius:10px;padding:10px 14px;cursor:pointer;font-weight:800}
+  .btn.alt{background:#f1f5f9;color:#0b47a1;border:1px solid #cbd5e1}
+  .row{display:flex;gap:8px;flex-wrap:wrap}
+  .toolbar{display:flex;justify-content:space-between;align-items:center;margin:10px 0}
+  .badge{display:inline-block;padding:4px 8px;border-radius:999px;font-size:12px;border:1px solid #e5e7eb;background:#f8fafc}
+  .ok{color:#0a4bb0}
+  .danger{color:#b91c1c}
+  #login{position:fixed;inset:0;background:#0b0e18cc;display:grid;place-items:center}
+  #login .box{background:#fff;border-radius:14px;padding:18px;box-shadow:var(--shadow);width:min(380px,92vw)}
+</style>
+</head>
+<body>
+
+<header>
+  <strong>PROSTAFF · Admin (Demo)</strong>
+  <a href="./index.html">← Bosh sayt</a>
+</header>
+
+<div class="wrap">
+
+  <div class="tabs">
+    <button class="tab active" id="tabWorkers" onclick="activate('workers')">Ishchilar</button>
+    <button class="tab" id="tabFirms" onclick="activate('firms')">Firmalar</button>
+  </div>
+
+  <!-- Workers -->
+  <section id="workers" class="card">
+    <h3 style="margin-top:0">Ishchilarni boshqarish</h3>
+
+    <div class="toolbar">
+      <div class="row">
+        <input id="wSearch" placeholder="Qidirish: ism, shahar, kasb..." oninput="renderWorkers()"/>
+        <select id="wCat" onchange="renderWorkers()">
+          <option value="">Kategoriya: barchasi</option>
+          <option value="tozalash">Tozalash</option>
+          <option value="bog">Bog‘ ishlari</option>
+          <option value="uy">Uy xizmati</option>
+          <option value="service">Servis/Usta</option>
+        </select>
+      </div>
+      <div class="row">
+        <button class="btn alt" onclick="exportJSON('workers')">Export JSON</button>
+        <label class="btn alt" style="cursor:pointer">
+          Import JSON<input type="file" accept="application/json" hidden onchange="importJSON(event,'workers')">
+        </label>
+      </div>
+    </div>
+
+    <form id="wForm" onsubmit="saveWorker(event)">
+      <input type="hidden" id="wId">
+      <input id="wName" placeholder="Ism Familiya" required>
+      <input id="wRole" placeholder="Kasbi (Tozalovchi/Bog‘bon...)" required>
+      <select id="wCatSel" required>
+        <option value="">Kategoriya tanlang</option>
+        <option value="tozalash">tozalash</option>
+        <option value="bog">bog</option>
+        <option value="uy">uy</option>
+        <option value="service">service</option>
+      </select>
+      <input id="wCity" placeholder="Shahar (Samarqand)" required>
+      <input id="wPhone" placeholder="+998 90 123 45 67" required>
+      <input id="wPrice" placeholder="Narxi (kuniga 150 000 so‘m)" required>
+      <input id="wRate" placeholder="Reyting (4.8)" type="number" step="0.1" min="0" max="5">
+      <textarea id="wAbout" class="full" placeholder="Qisqa tavsif"></textarea>
+      <label class="full"><input type="checkbox" id="wVerified"> Tekshirilgan</label>
+      <div class="row full">
+        <button class="btn" type="submit">Saqlash</button>
+        <button class="btn alt" type="button" onclick="resetWorkerForm()">Tozalash</button>
+      </div>
+    </form>
+
+    <div style="overflow:auto;margin-top:10px">
+      <table>
+        <thead>
+          <tr><th>Ism</th><th>Kasb / Kategoriya</th><th>Shahar</th><th>Narx</th><th>Reyting</th><th>Holat</th><th>Amal</th></tr>
+        </thead>
+        <tbody id="wTbody"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Firms -->
+  <section id="firms" class="card" style="display:none">
+    <h3 style="margin-top:0">Firmalarni boshqarish</h3>
+
+    <div class="toolbar">
+      <div class="row">
+        <input id="fSearch" placeholder="Qidirish: nom, shahar..." oninput="renderFirms()"/>
+        <select id="fType" onchange="renderFirms()">
+          <option value="">Turi: barchasi</option>
+          <option value="tozalash firmasi">Tozalash firmasi</option>
+          <option value="bog‘ xizmati">Bog‘ xizmati</option>
+          <option value="servis/usta">Servis/Usta</option>
+          <option value="uy xizmati">Uy xizmati</option>
+        </select>
+      </div>
+      <div class="row">
+        <button class="btn alt" onclick="exportJSON('firms')">Export JSON</button>
+        <label class="btn alt" style="cursor:pointer">
+          Import JSON<input type="file" accept="application/json" hidden onchange="importJSON(event,'firms')">
+        </label>
+      </div>
+    </div>
+
+    <form id="fForm" onsubmit="saveFirm(event)">
+      <input type="hidden" id="fId">
+      <input id="fTitle" placeholder="Firma nomi" required>
+      <input id="fTypeInp" placeholder="Turi (tozalash firmasi/servis)" required>
+      <input id="fCity" placeholder="Shahar" required>
+      <input id="fContact" placeholder="Aloqa: +998 ..." required>
+      <input id="fPrice" placeholder="Narx (oyiga 600 000 so‘m obuna)">
+      <textarea id="fTags" class="full" placeholder="Yorliqlar: ofis, mehmonxona, elektr ... (vergul bilan)"></textarea>
+      <label class="full"><input type="checkbox" id="fVerified"> Tekshirilgan</label>
+      <div class="row full">
+        <button class="btn" type="submit">Saqlash</button>
+        <button class="btn alt" type="button" onclick="resetFirmForm()">Tozalash</button>
+      </div>
+    </form>
+
+    <div style="overflow:auto;margin-top:10px">
+      <table>
+        <thead>
+          <tr><th>Firma</th><th>Turi</th><th>Shahar</th><th>Narx</th><th>Holat</th><th>Amal</th></tr>
+        </thead>
+        <tbody id="fTbody"></tbody>
+      </table>
+    </div>
+  </section>
+
+</div>
+
+<!-- Demo login (oddiy) -->
+<div id="login">
+  <div class="box">
+    <h3 style="margin:0 0 6px 0">Admin kirish</h3>
+    <p class="muted" style="color:#475569">Demo uchun oddiy parol ishlatiladi. Real loyihada backend autentifikatsiya kerak.</p>
+    <input id="pwd" type="password" placeholder="Parol: prostaff123" style="width:100%;padding:10px;border:1px solid #cbd5e1;border-radius:10px;margin:8px 0">
+    <div class="row">
+      <button class="btn" onclick="auth()">Kirish</button>
+      <button class="btn alt" onclick="location.href='./index.html'">Bosh sahifa</button>
+    </div>
+    <div id="err" style="color:#b91c1c;margin-top:8px"></div>
+  </div>
+</div>
+
+<script>
+/* ==================== AUTH (DEMO) ==================== */
+function auth(){
+  const ok = document.getElementById('pwd').value.trim() === 'prostaff123';
+  if(!ok){ document.getElementById('err').textContent = 'Parol noto‘g‘ri.'; return; }
+  document.getElementById('login').style.display='none';
+}
+
+/* ==================== STORAGE HELPERS ==================== */
+const db = {
+  load(key, fallback){ try{ return JSON.parse(localStorage.getItem(key)) || fallback }catch(_){ return fallback } },
+  save(key, value){ localStorage.setItem(key, JSON.stringify(value)) }
+};
+
+let workers = db.load('ps_workers', [
+  {id:1, name:"Aziza Ismoilova", role:"Tozalovchi", cat:"tozalash", city:"Samarqand", phone:"+998901234567", price:"120 000 so‘m/kun", rate:4.9, about:"Mehmonxona va ofis tajriba", verified:true},
+  {id:2, name:"Shavkat Karimov", role:"Bog‘bon", cat:"bog", city:"Samarqand", phone:"+998931112233", price:"150 000 so‘m/kun", rate:4.7, about:"Gazon, daraxt kesish", verified:false},
+]);
+let firms = db.load('ps_firms', [
+  {id:1, title:"CleanPro", type:"tozalash firmasi", city:"Samarqand", contact:"+998 90 000 11 22", price:"oyiga 600 000 so‘m obuna", tags:["ofis","mehmonxona"], verified:true},
+  {id:2, title:"FixIt Usta", type:"servis/usta", city:"Samarqand", contact:"+998 93 333 66 99", price:"soatiga 70 000 so‘m", tags:["elektr"], verified:false},
+]);
+function uid(list){ return (Math.max(0, ...list.map(x=>x.id||0)) + 1) }
+
+/* ==================== TABS ==================== */
+function activate(which){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('section.card').forEach(s=>s.style.display='none');
+  if(which==='workers'){ document.getElementById('tabWorkers').classList.add('active'); document.getElementById('workers').style.display='block'; }
+  else { document.getElementById('tabFirms').classList.add('active'); document.getElementById('firms').style.display='block'; }
+}
+
+/* ==================== WORKERS CRUD ==================== */
+function renderWorkers(){
+  const q = (document.getElementById('wSearch').value||'').toLowerCase();
+  const cat = document.getElementById('wCat').value;
+  const tb = document.getElementById('wTbody'); tb.innerHTML='';
+  workers
+    .filter(w => (!cat || w.cat===cat) &&
+                 (!q || [w.name,w.role,w.city,(w.price||''),w.phone].join(' ').toLowerCase().includes(q)))
+    .forEach(w=>{
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${w.name}</td>
+        <td>${w.role} <span class="badge">${w.cat}</span></td>
+        <td>${w.city}</td>
+        <td>${w.price||''}</td>
+        <td>${w.rate||''}</td>
+        <td>${w.verified?'<span class="ok">✅</span>':'<span class="danger">⏳</span>'}</td>
+        <td class="row">
+          <button class="btn alt" onclick='editWorker(${w.id})'>Tahrirlash</button>
+          <button class="btn" onclick='toggleVerifyWorker(${w.id})'>${w.verified?'Bekor qilish':'Tasdiqlash'}</button>
+          <button class="btn alt" onclick='delWorker(${w.id})'>O‘chirish</button>
+        </td>`;
+      tb.appendChild(tr);
+    });
+}
+function resetWorkerForm(){ document.getElementById('wForm').reset(); document.getElementById('wId').value=''; }
+function saveWorker(e){
+  e.preventDefault();
+  const id = +document.getElementById('wId').value || uid(workers);
+  const obj = {
+    id,
+    name:document.getElementById('wName').value.trim(),
+    role:document.getElementById('wRole').value.trim(),
+    cat:document.getElementById('wCatSel').value,
+    city:document.getElementById('wCity').value.trim(),
+    phone:document.getElementById('wPhone').value.trim(),
+    price:document.getElementById('wPrice').value.trim(),
+    rate:+document.getElementById('wRate').value || null,
+    about:document.getElementById('wAbout').value.trim(),
+    verified:document.getElementById('wVerified').checked
+  };
+  const i = workers.findIndex(x=>x.id===id);
+  if(i>-1) workers[i]=obj; else workers.push(obj);
+  db.save('ps_workers', workers); resetWorkerForm(); renderWorkers();
+}
+function editWorker(id){
+  const w = workers.find(x=>x.id===id); if(!w) return;
+  document.getElementById('wId').value = w.id;
+  document.getElementById('wName').value = w.name;
+  document.getElementById('wRole').value = w.role;
+  document.getElementById('wCatSel').value = w.cat;
+  document.getElementById('wCity').value = w.city;
+  document.getElementById('wPhone').value = w.phone;
+  document.getElementById('wPrice').value = w.price||'';
+  document.getElementById('wRate').value = w.rate||'';
+  document.getElementById('wAbout').value = w.about||'';
+  document.getElementById('wVerified').checked = !!w.verified;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function delWorker(id){
+  if(!confirm('O‘chirishni tasdiqlaysizmi?')) return;
+  workers = workers.filter(x=>x.id!==id);
+  db.save('ps_workers', workers); renderWorkers();
+}
+function toggleVerifyWorker(id){
+  const w = workers.find(x=>x.id===id); if(!w) return;
+  w.verified = !w.verified; db.save('ps_workers', workers); renderWorkers();
+}
+
+/* ==================== FIRMS CRUD ==================== */
+function renderFirms(){
+  const q = (document.getElementById('fSearch').value||'').toLowerCase();
+  const typ = document.getElementById('fType').value;
+  const tb = document.getElementById('fTbody'); tb.innerHTML='';
+  firms
+    .filter(f => (!typ || f.type===typ) &&
+                 (!q || [f.title,f.type,f.city,(f.price||''),(f.contact||'')].join(' ').toLowerCase().includes(q)))
+    .forEach(f=>{
+      const tr = document.createElement('tr');
+      tr.innerHTML = `
+        <td>${f.title}</td>
+        <td>${f.type}</td>
+        <td>${f.city}</td>
+        <td>${f.price||''}</td>
+        <td>${f.verified?'<span class="ok">✅</span>':'<span class="danger">⏳</span>'}</td>
+        <td class="row">
+          <button class="btn alt" onclick='editFirm(${f.id})'>Tahrirlash</button>
+          <button class="btn" onclick='toggleVerifyFirm(${f.id})'>${f.verified?'Bekor qilish':'Tasdiqlash'}</button>
+          <button class="btn alt" onclick='delFirm(${f.id})'>O‘chirish</button>
+        </td>`;
+      tb.appendChild(tr);
+    });
+}
+function resetFirmForm(){ document.getElementById('fForm').reset(); document.getElementById('fId').value=''; }
+function saveFirm(e){
+  e.preventDefault();
+  const id = +document.getElementById('fId').value || uid(firms);
+  const obj = {
+    id,
+    title:document.getElementById('fTitle').value.trim(),
+    type:document.getElementById('fTypeInp').value.trim().toLowerCase(),
+    city:document.getElementById('fCity').value.trim(),
+    contact:document.getElementById('fContact').value.trim(),
+    price:document.getElementById('fPrice').value.trim(),
+    tags:(document.getElementById('fTags').value||'').split(',').map(s=>s.trim()).filter(Boolean),
+    verified:document.getElementById('fVerified').checked
+  };
+  const i = firms.findIndex(x=>x.id===id);
+  if(i>-1) firms[i]=obj; else firms.push(obj);
+  db.save('ps_firms', firms); resetFirmForm(); renderFirms();
+}
+function editFirm(id){
+  const f = firms.find(x=>x.id===id); if(!f) return;
+  document.getElementById('fId').value = f.id;
+  document.getElementById('fTitle').value = f.title;
+  document.getElementById('fTypeInp').value = f.type;
+  document.getElementById('fCity').value = f.city;
+  document.getElementById('fContact').value = f.contact||'';
+  document.getElementById('fPrice').value = f.price||'';
+  document.getElementById('fTags').value = (f.tags||[]).join(', ');
+  document.getElementById('fVerified').checked = !!f.verified;
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+function delFirm(id){
+  if(!confirm('O‘chirishni tasdiqlaysizmi?')) return;
+  firms = firms.filter(x=>x.id!==id);
+  db.save('ps_firms', firms); renderFirms();
+}
+function toggleVerifyFirm(id){
+  const f = firms.find(x=>x.id===id); if(!f) return;
+  f.verified = !f.verified; db.save('ps_firms', firms); renderFirms();
+}
+
+/* ==================== IMPORT / EXPORT ==================== */
+function exportJSON(kind){
+  const data = (kind==='workers') ? workers : firms;
+  const blob = new Blob([JSON.stringify(data,null,2)], {type:'application/json'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = `prostaff_${kind}.json`;
+  a.click();
+}
+function importJSON(e, kind){
+  const file = e.target.files[0]; if(!file) return;
+  const r = new FileReader();
+  r.onload = () => {
+    try{
+      const data = JSON.parse(r.result);
+      if(!Array.isArray(data)) throw new Error('Array emas');
+      if(kind==='workers'){ workers = data; db.save('ps_workers', workers); renderWorkers(); }
+      else { firms = data; db.save('ps_firms', firms); renderFirms(); }
+      alert('Import tugadi!');
+    }catch(err){ alert('JSON noto‘g‘ri: '+err.message) }
+  };
+  r.readAsText(file);
+}
+
+/* start */
+renderWorkers();
+renderFirms();
+</script>
+</body>
+  </html>
