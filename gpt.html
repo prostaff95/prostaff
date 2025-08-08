@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PROSTAFF — Ishchi va Xizmat Platformasi</title>
+  <meta name="description" content="PROSTAFF — kunlik va doimiy ishchilarni toping: tozalash, bog' ishlari, uy xizmati, ustalar.">
+  <style>
+    :root{
+      --blue:#0b5ed7; --blue-dark:#0a4bb0; --bg:#f6f8fc; --card:#ffffff; --text:#111827; --muted:#6b7280;
+      --shadow:0 10px 24px rgba(2, 33, 86, .08), 0 4px 10px rgba(2,33,86,.06);
+      --shadow-sm:0 6px 16px rgba(2,33,86,.08);
+      --radius:18px;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,'Helvetica Neue',Arial,sans-serif;background:var(--bg);color:var(--text)}
+    a{color:inherit;text-decoration:none}
+    /* Header */
+    header{position:sticky;top:0;z-index:50;background:linear-gradient(90deg,#0b5ed7,#0a4bb0);
+      color:#fff;box-shadow:var(--shadow-sm)}
+    .top{max-width:1100px;margin:0 auto;padding:14px 16px;display:flex;gap:12px;align-items:center;justify-content:space-between}
+    .brand{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.4px}
+    .brand .logo{width:36px;height:36px;border-radius:10px;background:#fff1;display:grid;place-items:center;border:1px solid #ffffff33}
+    .nav{display:flex;gap:10px;flex-wrap:wrap}
+    .nav a{padding:9px 12px;border-radius:12px;background:#ffffff10;color:#fff;border:1px solid #ffffff26;font-weight:600}
+    .nav a:hover{background:#ffffff18}
+    /* Main */
+    .wrap{max-width:1100px;margin:0 auto;padding:18px 16px}
+    .hero{background:var(--card);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow);display:grid;gap:10px}
+    .hero h1{margin:0;color:var(--blue);font-size:clamp(22px,4vw,34px)}
+    .hero p{margin:0;color:var(--muted)}
+    .cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
+    .btn{background:var(--blue);color:#fff;border:none;border-radius:14px;padding:12px 16px;font-weight:800;cursor:pointer}
+    .btn.secondary{background:#eef2ff;color:#0b47a1;border:1px solid #cdd8ff}
+    .btn:hover{background:var(--blue-dark)}
+    /* Cards */
+    .grid{margin-top:16px;display:grid;gap:14px;grid-template-columns:repeat(2,minmax(0,1fr))}
+    @media(min-width:760px){.grid{grid-template-columns:repeat(4,1fr)}}
+    .card{background:var(--card);border-radius:20px;padding:18px;box-shadow:var(--shadow);display:grid;gap:8px;cursor:pointer;transition:transform .08s ease}
+    .card:hover{transform:translateY(-2px)}
+    .card .icon{font-size:28px}
+    .card .title{font-weight:800}
+    .pill{display:inline-block;font-size:12px;padding:6px 10px;border-radius:999px;background:#eef2ff;color:#0b47a1;border:1px solid #cdd8ff}
+    /* Sections */
+    .section{display:none;margin-top:18px}
+    .section.active{display:block}
+    .section .head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+    .back{background:#eef2ff;border:1px solid #cdd8ff;color:#0b47a1;border-radius:12px;padding:8px 12px;font-weight:700;cursor:pointer}
+    .list{display:grid;gap:12px;grid-template-columns:1fr}
+    @media(min-width:760px){.list{grid-template-columns:repeat(2,1fr)}}
+    .item{background:var(--card);border-radius:18px;box-shadow:var(--shadow-sm);padding:14px;display:flex;gap:12px;align-items:stretch}
+    .avatar{width:64px;height:64px;border-radius:14px;background:linear-gradient(135deg,#dbeafe,#bfdbfe);display:grid;place-items:center;font-size:26px}
+    .meta{flex:1}
+    .meta h4{margin:0 0 4px 0}
+    .meta .sub{color:var(--muted);font-size:14px}
+    .meta .tags{margin-top:6px;display:flex;gap:8px;flex-wrap:wrap}
+    .meta .tag{font-size:12px;background:#f1f5f9;border:1px solid #e5e7eb;color:#334155;padding:5px 8px;border-radius:999px}
+    .price{font-weight:800;color:#0a4bb0}
+    .act{display:flex;align-items:center;gap:8px}
+    .link{padding:8px 10px;border-radius:10px;border:1px solid #e5e7eb;background:#fff;cursor:pointer}
+    /* Modal */
+    dialog{border:none;border-radius:18px;width:min(520px,92vw);box-shadow:var(--shadow);padding:0}
+    dialog::backdrop{background:rgba(10,19,43,.45)}
+    .modal{padding:18px}
+    .modal .t{margin:0 0 6px 0;color:var(--blue)}
+    .row{display:flex;flex-wrap:wrap;gap:10px;margin-top:8px}
+    footer{color:#94a3b8;text-align:center;padding:28px}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="top">
+      <div class="brand">
+        <div class="logo">🧩</div>
+        <div>PROSTAFF</div>
+      </div>
+      <nav class="nav">
+        <a href="#home" onclick="showHome()">Bosh sahifa</a>
+        <a href="#workers" onclick="openSection('workers')">Ishchilar</a>
+        <a href="#services" onclick="openSection('services')">Xizmatlar</a>
+        <a href="#contact" onclick="scrollToContact()">Aloqa</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="wrap" id="home">
+    <!-- Hero -->
+    <section class="hero">
+      <h1>Kunlik va doimiy ishchilar — 3 daqiqada toping</h1>
+      <p>Tozalash, bog‘ ishlari, uy xizmati yoki ustalar. Ishchi kelmasa — zaxira ishchi kafolatlanadi.</p>
+      <div class="cta">
+        <button class="btn" onclick="openSection('workers')">Ishchilarni ko‘rish</button>
+        <button class="btn secondary" onclick="openSection('services')">Xizmatlar ro‘yxati</button>
+      </div>
+    </section>
+
+    <!-- Categories -->
+    <div class="grid" style="margin-top:18px">
+      <div class="card" onclick="openSection('workers','tozalash')">
+        <div class="icon">🧹</div>
+        <div class="title">Tozalash</div>
+        <div class="pill">Top ishchilar</div>
+      </div>
+      <div class="card" onclick="openSection('workers','bog')">
+        <div class="icon">🌿</div>
+        <div class="title">Bog‘ ishlari</div>
+        <div class="pill">Mavsumiy</div>
+      </div>
+      <div class="card" onclick="openSection('workers','uy')">
+        <div class="icon">🏠</div>
+        <div class="title">Uy xizmati</div>
+        <div class="pill">Tavsiya etilgan</div>
+      </div>
+      <div class="card" onclick="openSection('services')">
+        <div class="icon">🛠️</div>
+        <div class="title">Xizmat ko‘rsatish</div>
+        <div class="pill">Firmalar</div>
+      </div>
+    </div>
+
+    <!-- ISHCHILAR -->
+    <section id="sec-workers" class="section">
+      <div class="head">
+        <h2>Ishchilar ro‘yxati</h2>
+        <button class="back" onclick="showHome()">⬅ Orqaga</button>
+      </div>
+      <div class="list" id="workersList"></div>
+    </section>
+
+    <!-- XIZMATLAR -->
+    <section id="sec-services" class="section">
+      <div class="head">
+        <h2>Xizmat ko‘rsatuvchi firmalar</h2>
+        <button class="back" onclick="showHome()">⬅ Orqaga</button>
+      </div>
+      <div class="list" id="servicesList"></div>
+    </section>
+
+    <!-- Aloqa -->
+    <section id="contact" class="hero" style="margin-top:18px">
+      <h2 style="margin:0;color:var(--blue)">Biz bilan aloqa</h2>
+      <p class="muted">Savol va buyurtmalar uchun:</p>
+      <div class="row">
+        <a class="btn" href="tel:+998501017695">📞 +998 (50) 101-76-95</a>
+        <a class="btn secondary" href="mailto:prostaff.uz@gmail.com">📧 prostaff.uz@gmail.com</a>
+        <a class="btn" target="_blank" href="https://wa.me/998501017695?text=Salom,%20PROSTAFF%20bo‘yicha%20ma’lumot%20kerak.">WhatsApp</a>
+      </div>
+    </section>
+  </div>
+
+  <footer>© 2025 PROSTAFF. Barcha huquqlar himoyalangan.</footer>
+
+  <!-- Modal (Ishchi tafsiloti) -->
+  <dialog id="detailModal">
+    <div class="modal">
+      <h3 class="t" id="mName"></h3>
+      <div class="row">
+        <div class="avatar" id="mAvatar">👤</div>
+        <div>
+          <div id="mRole" class="muted"></div>
+          <div id="mCity" class="muted"></div>
+          <div id="mPrice" class="price" style="margin-top:6px"></div>
+        </div>
+      </div>
+      <p id="mAbout" style="margin:10px 0 0 0"></p>
+      <div class="row" style="margin-top:12px">
+        <a class="btn" id="mCall" href="#">📞 Qo‘ng‘iroq</a>
+        <a class="btn secondary" id="mWa" target="_blank" href="#">WhatsApp</a>
+      </div>
+      <div style="text-align:right;margin-top:8px">
+        <button class="back" onclick="document.getElementById('detailModal').close()">Yopish</button>
+      </div>
+    </div>
+  </dialog>
+
+  <script>
+    /* ====== TAXMINIY MA'LUMOTLAR ====== */
+    const workers = [
+      {name:"Aziza Ismoilova", role:"Tozalovchi", cat:"tozalash", city:"Samarqand", rating:4.9, price:"120 000 so‘m/kun", phone:"+998901234567", avatar:"🧹",
+       about:"5 yil tajriba. Mehmonxona va ofis tozalashda ishlagan. O‘qitilgan, ishonchli."},
+      {name:"Shavkat Karimov", role:"Bog‘bon", cat:"bog", city:"Samarqand", rating:4.7, price:"150 000 so‘m/kun", phone:"+998931112233", avatar:"🌿",
+       about:"Daraxt kesish, gazon parvarishi, tomorqa ishlari. Tez va sifatli."},
+      {name:"Dilshoda X.", role:"Uy xizmati (housekeeping)", cat:"uy", city:"Samarqand", rating:4.8, price:"140 000 so‘m/kun", phone:"+998935556677", avatar:"🏠",
+       about:"Remontdan keyin tozalash, jihozlarni tartibga keltirish."},
+      {name:"Rustam Qodirov", role:"Elektrik", cat:"service", city:"Samarqand", rating:4.6, price:"160 000 so‘m/kun", phone:"+998903336699", avatar:"🛠️",
+       about:"Elektr ta’miri, rozetka, chiroq, avtomat o‘rnatish."},
+      {name:"Madina M.", role:"Tozalovchi", cat:"tozalash", city:"Samarqand", rating:4.9, price:"125 000 so‘m/kun", phone:"+998909998877", avatar:"🧹",
+       about:"Uy va ofislar uchun kunlik tozalash. Zaxira ishchi opsiyasi bor."}
+    ];
+
+    const services = [
+      {title:"CleanPro Samarqand", type:"Tozalash firmasi", city:"Samarqand", price:"oyiga 600 000 so‘m obuna", tag:["ofis","mehmonxona"]},
+      {title:"GreenGarden", type:"Bog‘ ishlari xizmati", city:"Samarqand", price:"kuniga 150 000 so‘m", tag:["gazon","daraxt kesish"]},
+      {title:"FixIt Usta", type:"Servis/Elektrik", city:"Samarqand", price:"soatiga 70 000 so‘m", tag:["elektr","usta","ta’mir"]},
+      {title:"HouseCare", type:"Uy xizmati", city:"Samarqand", price:"kuniga 140 000 so‘m", tag:["uy tozalash","housekeeping"]}
+    ];
+
+    /* ====== YORDAMCHI ====== */
+    const $ = s => document.querySelector(s);
+
+    function showHome(){
+      $('#sec-workers')?.classList.remove('active');
+      $('#sec-services')?.classList.remove('active');
+      window.scrollTo({top:0,behavior:"smooth"});
+    }
+
+    function openSection(which, filterCat){
+      if(which==='workers'){
+        renderWorkers(filterCat);
+        $('#sec-workers').classList.add('active');
+        $('#sec-services').classList.remove('active');
+      } else {
+        renderServices();
+        $('#sec-services').classList.add('active');
+        $('#sec-workers').classList.remove('active');
+      }
+      document.getElementById('home').scrollIntoView({behavior:'smooth'});
+    }
+
+    function renderWorkers(cat){
+      const box = $('#workersList');
+      box.innerHTML = '';
+      workers
+        .filter(w => !cat || w.cat===cat || (cat==='service' && w.cat==='service'))
+        .forEach(w=>{
+          const el = document.createElement('div');
+          el.className='item';
+          el.innerHTML = `
+            <div class="avatar">${w.avatar}</div>
+            <div class="meta">
+              <h4>${w.name} <span class="price">• ⭐ ${w.rating}</span></h4>
+              <div class="sub">${w.role} • ${w.city} • <span class="price">${w.price}</span></div>
+              <div class="tags">
+                <span class="tag">${w.cat}</span>
+                <span class="tag">tekshirilgan</span>
+              </div>
+            </div>
+            <div class="act">
+              <button class="link" onclick='openDetail(${JSON.stringify(w).replace(/'/g,"&apos;")})'>Batafsil</button>
+              <a class="link" href="tel:${w.phone}">Qo‘ng‘iroq</a>
+            </div>`;
+          box.appendChild(el);
+        });
+    }
+
+    function renderServices(){
+      const box = $('#servicesList');
+      box.innerHTML = '';
+      services.forEach(s=>{
+        const el = document.createElement('div');
+        el.className='item';
+        el.innerHTML = `
+          <div class="avatar">🏢</div>
+          <div class="meta">
+            <h4>${s.title} <span class="price">• ${s.price}</span></h4>
+            <div class="sub">${s.type} • ${s.city}</div>
+            <div class="tags">${s.tag.map(t=>`<span class="tag">${t}</span>`).join('')}</div>
+          </div>
+          <div class="act">
+            <a class="link" href="#contact">Aloqa</a>
+          </div>`;
+        box.appendChild(el);
+      });
+    }
+
+    function openDetail(w){
+      const m = document.getElementById('detailModal');
+      document.getElementById('mName').textContent = w.name;
+      document.getElementById('mAvatar').textContent = w.avatar;
+      document.getElementById('mRole').textContent = `${w.role} • ⭐ ${w.rating}`;
+      document.getElementById('mCity').textContent = w.city;
+      document.getElementById('mPrice').textContent = w.price;
+      document.getElementById('mAbout').textContent = w.about || '';
+      document.getElementById('mCall').href = `tel:${w.phone}`;
+      document.getElementById('mWa').href = `https://wa.me/${w.phone.replace(/\D/g,'')}?text=Salom,%20${encodeURIComponent(w.name)}%20xizmatingiz%20bo‘yicha%20ma’lumot%20kerak.`;
+      m.showModal();
+    }
+
+    function scrollToContact(){ document.getElementById('contact').scrollIntoView({behavior:'smooth'}) }
+
+    // start state
+    showHome();
+  </script>
+</body>
+</html>
