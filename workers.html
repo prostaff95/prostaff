@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PROSTAFF — Ishchilar</title>
+  <style>
+    :root{--bg:#0b1220;--card:#0f172a;--text:#e5e7eb;--mut:#94a3b8;--line:#1e293b;--pri:#0b5ed7;--pri2:#0ea5e9;--r:18px;}
+    *{box-sizing:border-box} body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Arial,sans-serif;background:linear-gradient(180deg,#0b1220,#0a0f1e);color:var(--text)}
+    header{position:sticky;top:0;background:linear-gradient(90deg,#0b1f4e,#0a1a3f);border-bottom:1px solid var(--line)}
+    .top{max-width:1180px;margin:0 auto;padding:14px 16px;display:flex;gap:10px;align-items:center;justify-content:space-between}
+    a{color:#cfe7ff;text-decoration:none} .btn{background:linear-gradient(180deg,#0ea5e9,#0b5ed7);border:none;border-radius:12px;padding:10px 14px;color:#fff;font-weight:800;cursor:pointer}
+    .wrap{max-width:1180px;margin:0 auto;padding:18px 16px}
+    .panel{background:linear-gradient(180deg,#0f1d3b,#0c1732);border:1px solid var(--line);border-radius:var(--r);padding:16px;box-shadow:0 18px 40px #0009}
+    .filters{display:grid;gap:10px;grid-template-columns:1fr 1fr 1fr 120px}
+    @media(max-width:760px){.filters{grid-template-columns:1fr 1fr}}
+    input,select{width:100%;padding:10px;border-radius:10px;border:1px solid #203255;background:#0b1428;color:#dbeafe}
+    .grid{margin-top:16px;display:grid;gap:12px;grid-template-columns:repeat(1,1fr)}
+    @media(min-width:860px){.grid{grid-template-columns:repeat(3,1fr)}}
+    .card{background:#0f1d3b;border:1px solid var(--line);border-radius:16px;padding:14px;display:flex;gap:12px;align-items:center;box-shadow:0 10px 24px #0009}
+    .av{width:60px;height:60px;border-radius:16px;display:grid;place-items:center;background:linear-gradient(135deg,#22d3ee,#0ea5e9);color:#002;font-size:26px}
+    .meta{flex:1}.meta h3{margin:0}.sub{color:#9fb3ce;font-size:14px}.price{color:#b9f7ff;font-weight:900}
+    .tags{margin-top:6px;display:flex;gap:6px;flex-wrap:wrap}.tag{font-size:12px;padding:4px 8px;border-radius:999px;border:1px solid #264a7f;background:#0d1b34;color:#b9d3ff}
+    .actions{display:flex;gap:8px}
+    .ghost{background:#0f1d3b;border:1px solid #21406d;color:#cfe7ff}
+    .pagination{display:flex;gap:8px;justify-content:center;margin:16px 0}
+    .page{padding:8px 12px;border-radius:10px;border:1px solid #21406d;background:#0f1d3b;color:#cfe7ff;cursor:pointer}
+    .page.active{background:linear-gradient(180deg,#0ea5e9,#0b5ed7);color:#fff;border:none}
+    dialog{border:none;border-radius:18px;width:min(560px,92vw);padding:0;background:linear-gradient(180deg,#0f1d3b,#0c1732);color:#e5e7eb;border:1px solid #1e293b;box-shadow:0 22px 46px #000c}
+    dialog::backdrop{background:rgba(1,8,20,.6)} .modal{padding:18px}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="top">
+      <a href="./index.html">← Bosh sahifa</a>
+      <strong>Ishchilar</strong>
+      <a href="./services.html">Firmalar →</a>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <div class="panel">
+      <div class="filters">
+        <input id="q" placeholder="Qidiruv: ism, shahar, kasb..." />
+        <select id="cat">
+          <option value="">Kategoriya (barchasi)</option>
+          <option value="tozalash">Tozalash</option>
+          <option value="bog">Bog‘ ishlari</option>
+          <option value="uy">Uy xizmati</option>
+          <option value="service">Servis/usta</option>
+        </select>
+        <select id="city">
+          <option value="">Shahar (barchasi)</option>
+          <option value="Samarqand">Samarqand</option>
+          <option value="Toshkent">Toshkent</option>
+          <option value="Buxoro">Buxoro</option>
+          <option value="Andijon">Andijon</option>
+          <option value="Namangan">Namangan</option>
+        </select>
+        <button class="btn" id="apply">Qo‘llash</button>
+      </div>
+    </div>
+
+    <div class="grid" id="list"></div>
+    <div class="pagination" id="pager"></div>
+  </div>
+
+  <!-- Modal -->
+  <dialog id="detail">
+    <div class="modal">
+      <h3 id="mName"></h3>
+      <div style="display:flex;gap:12px;align-items:center;margin:8px 0 2px">
+        <div class="av" id="mAv">👤</div>
+        <div>
+          <div id="mRole" class="sub"></div>
+          <div id="mCity" class="sub"></div>
+          <div id="mPrice" class="sub" style="margin-top:4px;font-weight:800;color:#bfe0ff"></div>
+        </div>
+      </div>
+      <p id="mAbout" style="margin:8px 0 0"></p>
+      <div style="display:flex;gap:10px;margin-top:12px;flex-wrap:wrap">
+        <a class="btn" id="mCall" href="#">📞 Qo‘ng‘iroq</a>
+        <a class="btn ghost" id="mWa" target="_blank" href="#">WhatsApp</a>
+      </div>
+      <div style="text-align:right;margin-top:8px">
+        <button class="ghost" onclick="document.getElementById('detail').close()">Yopish</button>
+      </div>
+    </div>
+  </dialog>
+
+<script>
+const data = [
+  {n:"Aziza Ismoilova", r:"Tozalovchi", c:"tozalash", city:"Samarqand", rate:4.9, p:"120 000 so‘m/kun", ph:"+998901234567", av:"🧹", about:"Mehmonxona va ofis tozalashda 5 yil tajriba."},
+  {n:"Shavkat Karimov", r:"Bog‘bon", c:"bog", city:"Samarqand", rate:4.7, p:"150 000 so‘m/kun", ph:"+998931112233", av:"🌿", about:"Gazon, daraxt kesish, tomorqa."},
+  {n:"Dilshoda Hamroeva", r:"Uy xizmati", c:"uy", city:"Toshkent", rate:4.8, p:"140 000 so‘m/kun", ph:"+998935556677", av:"🏠", about:"Remontdan keyin tozalash."},
+  {n:"Rustam Qodirov", r:"Elektrik", c:"service", city:"Samarqand", rate:4.6, p:"160 000 so‘m/kun", ph:"+998903336699", av:"🛠️", about:"Elektr ta’miri, avtomat, chiroq."},
+  {n:"Madina M.", r:"Tozalovchi", c:"tozalash", city:"Buxoro", rate:4.9, p:"125 000 so‘m/kun", ph:"+998909998877", av:"🧹", about:"Uy/ofis kunlik tozalash."},
+  {n:"Jasur Xolmatov", r:"Bog‘bon", c:"bog", city:"Toshkent", rate:4.5, p:"150 000 so‘m/kun", ph:"+998933330011", av:"🌿", about:"Gulzor parvarishi."},
+  {n:"Nilufar Q.", r:"Uy xizmati", c:"uy", city:"Samarqand", rate:4.6, p:"135 000 so‘m/kun", ph:"+998935551122", av:"🏠", about:"Housekeeping."},
+  {n:"Olim T.", r:"Elektrik", c:"service", city:"Namangan", rate:4.4, p:"155 000 so‘m/kun", ph:"+998903221199", av:"🛠️", about:"Usta xizmatlari."},
+  {n:"Gulnora R.", r:"Tozalovchi", c:"tozalash", city:"Andijon", rate:4.7, p:"120 000 so‘m/kun", ph:"+998901112244", av:"🧹", about:"Tejamkor va aniq."},
+  {n:"Sardor A.", r:"Bog‘bon", c:"bog", city:"Buxoro", rate:4.6, p:"150 000 so‘m/kun", ph:"+998931129900", av:"🌿", about:"Mavsumiy ishlar."},
+  {n:"Azamat S.", r:"Uy xizmati", c:"uy", city:"Toshkent", rate:4.3, p:"130 000 so‘m/kun", ph:"+998935551188", av:"🏠", about:"Uy ishlariga yordam."},
+  {n:"Murodjon U.", r:"Elektrik", c:"service", city:"Samarqand", rate:4.8, p:"170 000 so‘m/kun", ph:"+998903228877", av:"🛠️", about:"Elektr ta’miri master."},
+  {n:"Zarina T.", r:"Tozalovchi", c:"tozalash", city:"Namangan", rate:4.9, p:"125 000 so‘m/kun", ph:"+998909994455", av:"🧹", about:"A’lo sifat."},
+  {n:"Baxtiyor O.", r:"Bog‘bon", c:"bog", city:"Andijon", rate:4.5, p:"140 000 so‘m/kun", ph:"+998933310077", av:"🌿", about:"Tomorqa ishlari."},
+  {n:"Ziyoda N.", r:"Uy xizmati", c:"uy", city:"Samarqand", rate:4.7, p:"140 000 so‘m/kun", ph:"+998935550033", av:"🏠", about:"Uy tozalash va tartib."},
+  {n:"Maqsud R.", r:"Elektrik", c:"service", city:"Toshkent", rate:4.2, p:"160 000 so‘m/kun", ph:"+998903223344", av:"🛠️", about:"Elektrik xizmatlari."},
+  {n:"Zebo X.", r:"Tozalovchi", c:"tozalash", city:"Buxoro", rate:4.6, p:"120 000 so‘m/kun", ph:"+998901114477", av:"🧹", about:"Uy/ofis."},
+  {n:"Kamol J.", r:"Bog‘bon", c:"bog", city:"Namangan", rate:4.4, p:"145 000 so‘m/kun", ph:"+998933319911", av:"🌿", about:"Bog‘lar dizayni."},
+  {n:"Aziza K.", r:"Uy xizmati", c:"uy", city:"Andijon", rate:4.6, p:"135 000 so‘m/kun", ph:"+998935559900", av:"🏠", about:"Tez va sifat."},
+  {n:"Bobur Y.", r:"Elektrik", c:"service", city:"Buxoro", rate:4.5, p:"165 000 so‘m/kun", ph:"+998903221100", av:"🛠️", about:"Xonadon va ofis."}
+];
+
+const perPage = 12;
+let page = 1;
+
+function paramsCat(){
+  const u = new URLSearchParams(location.search);
+  return u.get('cat') || '';
+}
+
+function render(){
+  const q = document.getElementById('q').value.toLowerCase().trim();
+  const cat = document.getElementById('cat').value || paramsCat();
+  const city = document.getElementById('city').value;
+  const filtered = data.filter(x =>
+    (!q || (x.n+x.r+x.city+x.p).toLowerCase().includes(q)) &&
+    (!cat || x.c===cat) &&
+    (!city || x.city===city)
+  );
+  const list = document.getElementById('list');
+  const pager = document.getElementById('pager');
+  const total = filtered.length;
+  const maxPage = Math.max(1, Math.ceil(total/perPage));
+  if(page>maxPage) page = maxPage;
+  const start = (page-1)*perPage;
+  const chunk = filtered.slice(start, start+perPage);
+
+  list.innerHTML = '';
+  chunk.forEach(x=>{
+    const el = document.createElement('div');
+    el.className='card';
+    el.innerHTML = `
+      <div class="av">${x.av}</div>
+      <div class="meta">
+        <h3>${x.n} <span style="font-weight:700;color:#b9f7ff">• ⭐ ${x.rate}</span></h3>
+        <div class="sub">${x.r} • ${x.city} • <span class="price">${x.p}</span></div>
+        <div class="tags"><span class="tag">${x.c}</span><span class="tag">tekshirilgan</span></div>
+      </div>
+      <div class="actions">
+        <button class="btn ghost" onclick='openDetail(${JSON.stringify(x).replace(/'/g,"&apos;")})'>Batafsil</button>
+        <a class="btn" href="tel:${x.ph}">Qo‘ng‘iroq</a>
+      </div>`;
+    list.appendChild(el);
+  });
+
+  pager.innerHTML = '';
+  for(let i=1;i<=maxPage;i++){
+    const b = document.createElement('button');
+    b.className = 'page'+(i===page?' active':'');
+    b.textContent = i;
+    b.onclick = ()=>{ page=i; render(); window.scrollTo({top:0,behavior:'smooth'}); };
+    pager.appendChild(b);
+  }
+}
+
+function openDetail(x){
+  document.getElementById('mName').textContent = x.n;
+  document.getElementById('mAv').textContent = x.av;
+  document.getElementById('mRole').textContent = `${x.r} • ⭐ ${x.rate}`;
+  document.getElementById('mCity').textContent = x.city;
+  document.getElementById('mPrice').textContent = x.p;
+  document.getElementById('mAbout').textContent = x.about || '';
+  document.getElementById('mCall').href = `tel:${x.ph}`;
+  document.getElementById('mWa').href = `https://wa.me/${x.ph.replace(/\D/g,'')}?text=Salom,%20${encodeURIComponent(x.n)}%20xizmatingiz%20bo‘yicha%20ma’lumot%20kerak.`;
+  document.getElementById('detail').showModal();
+}
+
+document.getElementById('apply').onclick = ()=>{ page=1; render(); };
+
+window.addEventListener('DOMContentLoaded', ()=>{
+  const catSel = document.getElementById('cat');
+  if(paramsCat()) catSel.value = paramsCat();
+  render();
+});
+</script>
+</body>
+  </html>
