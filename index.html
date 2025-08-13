@@ -2,123 +2,136 @@
 <html lang="uz">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>PROSTAFF — Ishchi va Xizmat Platformasi</title>
   <meta name="description" content="PROSTAFF — kunlik va doimiy ishchilarni toping: tozalash, bog' ishlari, uy xizmati, ustalar.">
+  <meta name="theme-color" content="#0b5ed7" />
   <style>
     :root{
-      --blue:#0b5ed7; --blue-dark:#0a4bb0; --bg:#f6f8fc; --card:#ffffff; --text:#111827; --muted:#6b7280;
-      --shadow:0 10px 24px rgba(2, 33, 86, .08), 0 4px 10px rgba(2,33,86,.06);
-      --shadow-sm:0 6px 16px rgba(2,33,86,.08);
+      --blue:#0b5ed7; --blue2:#0a4bb0; --bg:#0b1220; --card:#0f172a; --muted:#94a3b8; --text:#e5e7eb;
+      --accent:#22d3ee; --ok:#22c55e; --warn:#f59e0b;
+      --shadow:0 18px 40px rgba(0,0,0,.35), 0 6px 18px rgba(0,0,0,.25);
       --radius:18px;
     }
     *{box-sizing:border-box}
-    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,'Helvetica Neue',Arial,sans-serif;background:var(--bg);color:var(--text)}
+    html,body{margin:0;height:100%;scroll-behavior:smooth}
+    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Arial,sans-serif;background:radial-gradient(1200px 600px at 10% -10%,#10214a33,transparent), linear-gradient(180deg,#0b1220 0%,#0b1220 40%,#0a0f1e 100%); color:var(--text)}
     a{color:inherit;text-decoration:none}
+    .glass{backdrop-filter: saturate(140%) blur(6px); background:linear-gradient(180deg,#0b1a40aa,#0c1732aa), #0c1732; border:1px solid #1e293b; }
     /* Header */
-    header{position:sticky;top:0;z-index:50;background:linear-gradient(90deg,#0b5ed7,#0a4bb0);
-      color:#fff;box-shadow:var(--shadow-sm)}
-    .top{max-width:1100px;margin:0 auto;padding:14px 16px;display:flex;gap:12px;align-items:center;justify-content:space-between}
-    .brand{display:flex;align-items:center;gap:10px;font-weight:800;letter-spacing:.4px}
-    .brand .logo{width:36px;height:36px;border-radius:10px;background:#fff1;display:grid;place-items:center;border:1px solid #ffffff33}
-    .nav{display:flex;gap:10px;flex-wrap:wrap}
-    .nav a{padding:9px 12px;border-radius:12px;background:#ffffff10;color:#fff;border:1px solid #ffffff26;font-weight:600}
-    .nav a:hover{background:#ffffff18}
-    /* Main */
-    .wrap{max-width:1100px;margin:0 auto;padding:18px 16px}
-    .hero{background:var(--card);border-radius:var(--radius);padding:22px;box-shadow:var(--shadow);display:grid;gap:10px}
-    .hero h1{margin:0;color:var(--blue);font-size:clamp(22px,4vw,34px)}
-    .hero p{margin:0;color:var(--muted)}
-    .cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:6px}
-    .btn{background:var(--blue);color:#fff;border:none;border-radius:14px;padding:12px 16px;font-weight:800;cursor:pointer}
-    .btn.secondary{background:#eef2ff;color:#0b47a1;border:1px solid #cdd8ff}
-    .btn:hover{background:var(--blue-dark)}
-    /* Cards */
+    header{position:sticky;top:0;z-index:40;border-bottom:1px solid #1e293b;background:linear-gradient(90deg,#0b1f4e,#0a1a3f); box-shadow:0 8px 20px #00000033}
+    .top{max-width:1180px;margin:0 auto;padding:14px 16px;display:flex;gap:12px;align-items:center;justify-content:space-between}
+    .brand{display:flex;align-items:center;gap:12px;font-weight:900;letter-spacing:.3px}
+    .logo{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:radial-gradient(circle at 30% 20%,#ffffff66,transparent 40%), linear-gradient(135deg,#22d3ee,#0ea5e9); color:#001; font-size:22px; box-shadow:0 6px 24px #22d3ee55}
+    .nav{display:flex;gap:8px;flex-wrap:wrap}
+    .nav a{border:1px solid #1f2a44;background:#0f1d3b; padding:9px 12px;border-radius:12px;font-weight:700;color:#cfe7ff}
+    .nav a:hover{background:#152245}
+    /* Hero */
+    .wrap{max-width:1180px;margin:0 auto;padding:20px 16px}
+    .hero{border-radius:22px;padding:26px; box-shadow:var(--shadow);
+      background: radial-gradient(700px 300px at 20% 10%, #1d2b5a66, transparent), linear-gradient(180deg,#0f1b3a 0%, #0f1831 100%);
+      border:1px solid #1e293b}
+    .hero h1{margin:0 0 6px;font-size:clamp(22px,4vw,38px);line-height:1.1;background:linear-gradient(90deg,#e6f0ff,#9ddcff); -webkit-background-clip:text; background-clip:text; color:transparent}
+    .hero p{margin:0;color:#b8c7dd}
+    .cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+    .btn{background:linear-gradient(180deg,#0ea5e9,#0b5ed7); color:white; border:none;border-radius:14px;padding:12px 16px;font-weight:900;cursor:pointer; box-shadow:0 10px 20px #0ea5e94a}
+    .btn:hover{filter:brightness(1.08)}
+    .btn.ghost{background:#0f1d3b;border:1px solid #21406d;color:#cfe7ff}
+    .badge{display:inline-flex;gap:6px;align-items:center;font-size:12px;padding:6px 10px;border:1px solid #1f2a44;border-radius:999px;background:#0f1d3b;color:#bcd7ff}
+    /* Categories */
     .grid{margin-top:16px;display:grid;gap:14px;grid-template-columns:repeat(2,minmax(0,1fr))}
     @media(min-width:760px){.grid{grid-template-columns:repeat(4,1fr)}}
-    .card{background:var(--card);border-radius:20px;padding:18px;box-shadow:var(--shadow);display:grid;gap:8px;cursor:pointer;transition:transform .08s ease}
-    .card:hover{transform:translateY(-2px)}
+    .card{border-radius:18px;padding:18px;border:1px solid #1f2a44;background:radial-gradient(180px 160px at 20% 0%,#16356866,transparent), #0f1d3b; box-shadow:0 12px 26px #0009; cursor:pointer; transition:transform .08s ease, box-shadow .2s}
+    .card:hover{transform:translateY(-3px); box-shadow:0 18px 38px #000a}
     .card .icon{font-size:28px}
-    .card .title{font-weight:800}
-    .pill{display:inline-block;font-size:12px;padding:6px 10px;border-radius:999px;background:#eef2ff;color:#0b47a1;border:1px solid #cdd8ff}
+    .card .t{font-weight:900;margin-top:4px}
+    .pill{margin-top:6px;display:inline-block;font-size:12px;padding:6px 10px;border-radius:999px;background:#0b1f40;color:#9ac5ff;border:1px solid #21406d}
     /* Sections */
     .section{display:none;margin-top:18px}
-    .section.active{display:block}
-    .section .head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
-    .back{background:#eef2ff;border:1px solid #cdd8ff;color:#0b47a1;border-radius:12px;padding:8px 12px;font-weight:700;cursor:pointer}
+    .section.active{display:block; animation:fade .25s ease}
+    @keyframes fade{from{opacity:.4;transform:translateY(4px)}to{opacity:1;transform:none}}
+    .head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+    .back{background:#0f1d3b;border:1px solid #1f2a44;color:#cfe7ff;border-radius:12px;padding:8px 12px;font-weight:800;cursor:pointer}
     .list{display:grid;gap:12px;grid-template-columns:1fr}
-    @media(min-width:760px){.list{grid-template-columns:repeat(2,1fr)}}
-    .item{background:var(--card);border-radius:18px;box-shadow:var(--shadow-sm);padding:14px;display:flex;gap:12px;align-items:stretch}
-    .avatar{width:64px;height:64px;border-radius:14px;background:linear-gradient(135deg,#dbeafe,#bfdbfe);display:grid;place-items:center;font-size:26px}
+    @media(min-width:860px){.list{grid-template-columns:repeat(2,1fr)}}
+    .item{display:flex;gap:14px;align-items:stretch;padding:14px;border-radius:16px;border:1px solid #1f2a44;background:linear-gradient(180deg,#0f1d3b,#0c1732); box-shadow:0 10px 26px #000a}
+    .avatar{width:60px;height:60px;border-radius:16px;display:grid;place-items:center;font-size:26px;background:radial-gradient(circle at 30% 20%,#ffffff26,transparent 40%), linear-gradient(135deg,#22d3ee,#0ea5e9); color:#001}
     .meta{flex:1}
     .meta h4{margin:0 0 4px 0}
-    .meta .sub{color:var(--muted);font-size:14px}
-    .meta .tags{margin-top:6px;display:flex;gap:8px;flex-wrap:wrap}
-    .meta .tag{font-size:12px;background:#f1f5f9;border:1px solid #e5e7eb;color:#334155;padding:5px 8px;border-radius:999px}
-    .price{font-weight:800;color:#0a4bb0}
-    .act{display:flex;align-items:center;gap:8px}
-    .link{padding:8px 10px;border-radius:10px;border:1px solid #e5e7eb;background:#fff;cursor:pointer}
+    .sub{color:#9fb3ce;font-size:14px}
+    .tags{margin-top:8px;display:flex;gap:8px;flex-wrap:wrap}
+    .tag{font-size:12px;padding:5px 8px;border-radius:999px;border:1px solid #264a7f;background:#0d1b34;color:#b9d3ff}
+    .price{font-weight:900;color:#b9f7ff}
+    .act{display:flex;gap:8px;align-items:center}
+    .link{padding:8px 10px;border-radius:10px;border:1px solid #274a80;background:#0f1d3b;color:#cfe7ff;cursor:pointer}
+    .link:hover{background:#13234a}
+    /* Order form */
+    .panel{margin-top:18px;border:1px solid #1f2a44;border-radius:18px;padding:18px;background:linear-gradient(180deg,#0f1d3b,#0c1732); box-shadow:var(--shadow)}
+    form input, form select, form textarea{width:100%;padding:12px;margin:6px 0;border-radius:12px;border:1px solid #203255;background:#0b1428;color:#dbeafe}
+    form button{margin-top:6px}
+    /* Footer */
+    footer{padding:28px;text-align:center;color:#7e9abf}
     /* Modal */
-    dialog{border:none;border-radius:18px;width:min(520px,92vw);box-shadow:var(--shadow);padding:0}
-    dialog::backdrop{background:rgba(10,19,43,.45)}
+    dialog{border:none;border-radius:18px;width:min(560px,92vw);padding:0; background:linear-gradient(180deg,#0f1d3b,#0c1732); color:var(--text); border:1px solid #1f2a44; box-shadow:var(--shadow)}
+    dialog::backdrop{background:rgba(1,8,20,.6)}
     .modal{padding:18px}
-    .modal .t{margin:0 0 6px 0;color:var(--blue)}
-    .row{display:flex;flex-wrap:wrap;gap:10px;margin-top:8px}
-    footer{color:#94a3b8;text-align:center;padding:28px}
+    .modal .t{margin:0;color:#bfe0ff}
   </style>
 </head>
 <body>
+  <!-- Header -->
   <header>
     <div class="top">
       <div class="brand">
-        <div class="logo">🧩</div>
+        <div class="logo">P</div>
         <div>PROSTAFF</div>
       </div>
       <nav class="nav">
         <a href="#home" onclick="showHome()">Bosh sahifa</a>
         <a href="#workers" onclick="openSection('workers')">Ishchilar</a>
         <a href="#services" onclick="openSection('services')">Xizmatlar</a>
-        <a href="#contact" onclick="scrollToContact()">Aloqa</a>
+        <a href="#order">Buyurtma</a>
       </nav>
     </div>
   </header>
 
+  <!-- Main -->
   <div class="wrap" id="home">
-    <!-- Hero -->
     <section class="hero">
-      <h1>Kunlik va doimiy ishchilar — 3 daqiqada toping</h1>
-      <p>Tozalash, bog‘ ishlari, uy xizmati yoki ustalar. Ishchi kelmasa — zaxira ishchi kafolatlanadi.</p>
+      <span class="badge">✅ Zaxira ishchi kafolatlangan</span>
+      <h1>Kunlik va doimiy ishchilarni 3 daqiqada toping</h1>
+      <p>Tozalash, bog‘ ishlari, uy xizmati yoki ustalar. Xavfsiz, tekshirilgan profil va tez yetkazib berish.</p>
       <div class="cta">
         <button class="btn" onclick="openSection('workers')">Ishchilarni ko‘rish</button>
-        <button class="btn secondary" onclick="openSection('services')">Xizmatlar ro‘yxati</button>
+        <button class="btn ghost" onclick="openSection('services')">Xizmatlar ro‘yxati</button>
       </div>
     </section>
 
     <!-- Categories -->
-    <div class="grid" style="margin-top:18px">
+    <div class="grid">
       <div class="card" onclick="openSection('workers','tozalash')">
         <div class="icon">🧹</div>
-        <div class="title">Tozalash</div>
-        <div class="pill">Top ishchilar</div>
+        <div class="t">Tozalash</div>
+        <span class="pill">Top reyting</span>
       </div>
       <div class="card" onclick="openSection('workers','bog')">
         <div class="icon">🌿</div>
-        <div class="title">Bog‘ ishlari</div>
-        <div class="pill">Mavsumiy</div>
+        <div class="t">Bog‘ ishlari</div>
+        <span class="pill">Mavsumiy</span>
       </div>
       <div class="card" onclick="openSection('workers','uy')">
         <div class="icon">🏠</div>
-        <div class="title">Uy xizmati</div>
-        <div class="pill">Tavsiya etilgan</div>
+        <div class="t">Uy xizmati</div>
+        <span class="pill">Tavsiya etilgan</span>
       </div>
       <div class="card" onclick="openSection('services')">
         <div class="icon">🛠️</div>
-        <div class="title">Xizmat ko‘rsatish</div>
-        <div class="pill">Firmalar</div>
+        <div class="t">Xizmat ko‘rsatish</div>
+        <span class="pill">Firmalar</span>
       </div>
     </div>
 
-    <!-- ISHCHILAR -->
+    <!-- Workers -->
     <section id="sec-workers" class="section">
       <div class="head">
         <h2>Ishchilar ro‘yxati</h2>
@@ -127,7 +140,7 @@
       <div class="list" id="workersList"></div>
     </section>
 
-    <!-- XIZMATLAR -->
+    <!-- Services -->
     <section id="sec-services" class="section">
       <div class="head">
         <h2>Xizmat ko‘rsatuvchi firmalar</h2>
@@ -136,36 +149,47 @@
       <div class="list" id="servicesList"></div>
     </section>
 
-    <!-- Aloqa -->
-    <section id="contact" class="hero" style="margin-top:18px">
-      <h2 style="margin:0;color:var(--blue)">Biz bilan aloqa</h2>
-      <p class="muted">Savol va buyurtmalar uchun:</p>
-      <div class="row">
-        <a class="btn" href="tel:+998501017695">📞 +998 (50) 101-76-95</a>
-        <a class="btn secondary" href="mailto:prostaff.uz@gmail.com">📧 prostaff.uz@gmail.com</a>
-        <a class="btn" target="_blank" href="https://wa.me/998501017695?text=Salom,%20PROSTAFF%20bo‘yicha%20ma’lumot%20kerak.">WhatsApp</a>
-      </div>
+    <!-- Order -->
+    <section id="order" class="panel">
+      <h2>Tez buyurtma</h2>
+      <form id="orderForm">
+        <input id="o_name" placeholder="Ism" required />
+        <input id="o_phone" placeholder="Telefon +998..." required />
+        <select id="o_service" required>
+          <option value="">Xizmat turini tanlang</option>
+          <option>Tozalash</option>
+          <option>Bog‘ ishlari</option>
+          <option>Uy xizmati</option>
+          <option>Xizmat ko‘rsatish</option>
+        </select>
+        <input id="o_date" type="date" />
+        <input id="o_address" placeholder="Manzil" />
+        <input id="o_budget" placeholder="Budjet (ixtiyoriy)" />
+        <textarea id="o_note" placeholder="Qo‘shimcha izoh"></textarea>
+        <button class="btn" type="submit">Yuborish</button>
+        <div id="o_msg" style="margin-top:8px;color:#bfe0ff"></div>
+      </form>
     </section>
   </div>
 
   <footer>© 2025 PROSTAFF. Barcha huquqlar himoyalangan.</footer>
 
-  <!-- Modal (Ishchi tafsiloti) -->
+  <!-- Detail modal -->
   <dialog id="detailModal">
     <div class="modal">
       <h3 class="t" id="mName"></h3>
-      <div class="row">
+      <div style="display:flex;gap:12px;align-items:center;margin:8px 0 2px">
         <div class="avatar" id="mAvatar">👤</div>
         <div>
-          <div id="mRole" class="muted"></div>
-          <div id="mCity" class="muted"></div>
-          <div id="mPrice" class="price" style="margin-top:6px"></div>
+          <div id="mRole" class="sub"></div>
+          <div id="mCity" class="sub"></div>
+          <div id="mPrice" class="sub" style="margin-top:4px;font-weight:800;color:#bfe0ff"></div>
         </div>
       </div>
-      <p id="mAbout" style="margin:10px 0 0 0"></p>
-      <div class="row" style="margin-top:12px">
+      <p id="mAbout" style="margin:8px 0 0"></p>
+      <div style="display:flex;gap:10px;margin-top:12px;flex-wrap:wrap">
         <a class="btn" id="mCall" href="#">📞 Qo‘ng‘iroq</a>
-        <a class="btn secondary" id="mWa" target="_blank" href="#">WhatsApp</a>
+        <a class="btn ghost" id="mWa" target="_blank" href="#">WhatsApp</a>
       </div>
       <div style="text-align:right;margin-top:8px">
         <button class="back" onclick="document.getElementById('detailModal').close()">Yopish</button>
@@ -174,28 +198,24 @@
   </dialog>
 
   <script>
-    /* ====== TAXMINIY MA'LUMOTLAR ====== */
+    /* ===== Demo ma'lumotlar ===== */
     const workers = [
       {name:"Aziza Ismoilova", role:"Tozalovchi", cat:"tozalash", city:"Samarqand", rating:4.9, price:"120 000 so‘m/kun", phone:"+998901234567", avatar:"🧹",
-       about:"5 yil tajriba. Mehmonxona va ofis tozalashda ishlagan. O‘qitilgan, ishonchli."},
+       about:"5 yil tajriba. Mehmonxona va ofis tozalash."},
       {name:"Shavkat Karimov", role:"Bog‘bon", cat:"bog", city:"Samarqand", rating:4.7, price:"150 000 so‘m/kun", phone:"+998931112233", avatar:"🌿",
-       about:"Daraxt kesish, gazon parvarishi, tomorqa ishlari. Tez va sifatli."},
-      {name:"Dilshoda X.", role:"Uy xizmati (housekeeping)", cat:"uy", city:"Samarqand", rating:4.8, price:"140 000 so‘m/kun", phone:"+998935556677", avatar:"🏠",
+       about:"Gazon, daraxt kesish, tomorqa ishlari."},
+      {name:"Dilshoda X.", role:"Uy xizmati", cat:"uy", city:"Samarqand", rating:4.8, price:"140 000 so‘m/kun", phone:"+998935556677", avatar:"🏠",
        about:"Remontdan keyin tozalash, jihozlarni tartibga keltirish."},
       {name:"Rustam Qodirov", role:"Elektrik", cat:"service", city:"Samarqand", rating:4.6, price:"160 000 so‘m/kun", phone:"+998903336699", avatar:"🛠️",
-       about:"Elektr ta’miri, rozetka, chiroq, avtomat o‘rnatish."},
-      {name:"Madina M.", role:"Tozalovchi", cat:"tozalash", city:"Samarqand", rating:4.9, price:"125 000 so‘m/kun", phone:"+998909998877", avatar:"🧹",
-       about:"Uy va ofislar uchun kunlik tozalash. Zaxira ishchi opsiyasi bor."}
+       about:"Elektr ta’miri, rozetka, chiroq, avtomat."}
     ];
-
     const services = [
       {title:"CleanPro Samarqand", type:"Tozalash firmasi", city:"Samarqand", price:"oyiga 600 000 so‘m obuna", tag:["ofis","mehmonxona"]},
       {title:"GreenGarden", type:"Bog‘ ishlari xizmati", city:"Samarqand", price:"kuniga 150 000 so‘m", tag:["gazon","daraxt kesish"]},
-      {title:"FixIt Usta", type:"Servis/Elektrik", city:"Samarqand", price:"soatiga 70 000 so‘m", tag:["elektr","usta","ta’mir"]},
+      {title:"FixIt Usta", type:"Servis/Elektrik", city:"Samarqand", price:"soatiga 70 000 so‘m", tag:["elektr","usta"]},
       {title:"HouseCare", type:"Uy xizmati", city:"Samarqand", price:"kuniga 140 000 so‘m", tag:["uy tozalash","housekeeping"]}
     ];
 
-    /* ====== YORDAMCHI ====== */
     const $ = s => document.querySelector(s);
 
     function showHome(){
@@ -218,8 +238,7 @@
     }
 
     function renderWorkers(cat){
-      const box = $('#workersList');
-      box.innerHTML = '';
+      const box = $('#workersList'); box.innerHTML='';
       workers
         .filter(w => !cat || w.cat===cat || (cat==='service' && w.cat==='service'))
         .forEach(w=>{
@@ -244,8 +263,7 @@
     }
 
     function renderServices(){
-      const box = $('#servicesList');
-      box.innerHTML = '';
+      const box = $('#servicesList'); box.innerHTML='';
       services.forEach(s=>{
         const el = document.createElement('div');
         el.className='item';
@@ -257,7 +275,7 @@
             <div class="tags">${s.tag.map(t=>`<span class="tag">${t}</span>`).join('')}</div>
           </div>
           <div class="act">
-            <a class="link" href="#contact">Aloqa</a>
+            <a class="link" href="#order">Buyurtma</a>
           </div>`;
         box.appendChild(el);
       });
@@ -276,10 +294,20 @@
       m.showModal();
     }
 
-    function scrollToContact(){ document.getElementById('contact').scrollIntoView({behavior:'smooth'}) }
+    // Buyurtma yuborish (hozircha demo – xabar chiqaradi)
+    document.getElementById('orderForm').addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      const body = {
+        name:o_name.value.trim(), phone:o_phone.value.trim(), serviceType:o_service.value,
+        date:o_date.value, address:o_address.value.trim(), budget:o_budget.value.trim(), note:o_note.value.trim()
+      };
+      o_msg.textContent = "✅ Buyurtma qabul qilindi! Tez orada bog‘lanamiz.";
+      e.target.reset();
+      // Real backendga ulash uchun bu yerga fetch(API_URL + "/orders", ...) qo‘yamiz.
+    });
 
-    // start state
+    // start
     showHome();
   </script>
 </body>
-        </html>
+  </html>
