@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PROSTAFF — Xizmat ko‘rsatuvchi firmalar</title>
+  <style>
+    :root{--bg:#0b1220;--card:#0f172a;--text:#e5e7eb;--mut:#94a3b8;--line:#1e293b;--pri:#0b5ed7;--r:18px;}
+    *{box-sizing:border-box} body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Arial,sans-serif;background:linear-gradient(180deg,#0b1220,#0a0f1e);color:var(--text)}
+    header{position:sticky;top:0;background:linear-gradient(90deg,#0b1f4e,#0a1a3f);border-bottom:1px solid var(--line)}
+    .top{max-width:1180px;margin:0 auto;padding:14px 16px;display:flex;gap:10px;align-items:center;justify-content:space-between}
+    a{color:#cfe7ff;text-decoration:none} .btn{background:linear-gradient(180deg,#0ea5e9,#0b5ed7);border:none;border-radius:12px;padding:10px 14px;color:#fff;font-weight:800;cursor:pointer}
+    .wrap{max-width:1180px;margin:0 auto;padding:18px 16px}
+    .panel{background:linear-gradient(180deg,#0f1d3b,#0c1732);border:1px solid var(--line);border-radius:var(--r);padding:16px;box-shadow:0 18px 40px #0009}
+    .filters{display:grid;gap:10px;grid-template-columns:1fr 1fr 120px}
+    @media(max-width:760px){.filters{grid-template-columns:1fr 1fr}}
+    input,select{width:100%;padding:10px;border-radius:10px;border:1px solid #203255;background:#0b1428;color:#dbeafe}
+    .grid{margin-top:16px;display:grid;gap:12px;grid-template-columns:repeat(1,1fr)}
+    @media(min-width:860px){.grid{grid-template-columns:repeat(3,1fr)}}
+    .card{background:#0f1d3b;border:1px solid var(--line);border-radius:16px;padding:14px;display:flex;gap:12px;align-items:center;box-shadow:0 10px 24px #0009}
+    .av{width:60px;height:60px;border-radius:16px;display:grid;place-items:center;background:#17233f;color:#9ddcff;font-size:26px;border:1px solid #274a80}
+    .meta{flex:1}.meta h3{margin:0}.sub{color:#9fb3ce;font-size:14px}.price{color:#b9f7ff;font-weight:900}
+    .tags{margin-top:6px;display:flex;gap:6px;flex-wrap:wrap}.tag{font-size:12px;padding:4px 8px;border-radius:999px;border:1px solid #264a7f;background:#0d1b34;color:#b9d3ff}
+    .badge{margin-left:4px;font-size:11px;padding:2px 6px;border-radius:999px;background:#0b2a50;color:#a5d8ff;border:1px solid #21406d}
+    .pagination{display:flex;gap:8px;justify-content:center;margin:16px 0}
+    .page{padding:8px 12px;border-radius:10px;border:1px solid #21406d;background:#0f1d3b;color:#cfe7ff;cursor:pointer}
+    .page.active{background:linear-gradient(180deg,#0ea5e9,#0b5ed7);color:#fff;border:none}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="top">
+      <a href="./index.html">← Bosh sahifa</a>
+      <strong>Firmalar</strong>
+      <a href="./workers.html">Ishchilar →</a>
+    </div>
+  </header>
+
+  <div class="wrap">
+    <div class="panel">
+      <div class="filters">
+        <input id="q" placeholder="Qidiruv: firma nomi, shahar..." />
+        <select id="type">
+          <option value="">Turi (barchasi)</option>
+          <option value="tozalash">Tozalash firmasi</option>
+          <option value="bog">Bog‘ xizmati</option>
+          <option value="service">Servis/Usta</option>
+          <option value="uy">Uy xizmati</option>
+        </select>
+        <button class="btn" id="apply">Qo‘llash</button>
+      </div>
+    </div>
+
+    <div class="grid" id="list"></div>
+    <div class="pagination" id="pager"></div>
+  </div>
+
+<script>
+const firms = [
+  {t:"CleanPro Samarqand", typ:"tozalash", city:"Samarqand", price:"oyiga 600 000 so‘m obuna", tags:["ofis","mehmonxona"], hot:true},
+  {t:"GreenGarden", typ:"bog", city:"Samarqand", price:"kuniga 150 000 so‘m", tags:["gazon","daraxt kesish"]},
+  {t:"FixIt Usta", typ:"service", city:"Toshkent", price:"soatiga 70 000 so‘m", tags:["elektr","usta"], hot:true},
+  {t:"HouseCare", typ:"uy", city:"Samarqand", price:"kuniga 140 000 so‘m", tags:["uy tozalash"]},
+  {t:"ProClean", typ:"tozalash", city:"Toshkent", price:"oyiga 650 000 so‘m", tags:["ofis"]},
+  {t:"GardenArt", typ:"bog", city:"Buxoro", price:"kuniga 140 000 so‘m", tags:["gazon"]},
+  {t:"ElecMaster", typ:"service", city:"Namangan", price:"soatiga 65 000 so‘m", tags:["elektr"]},
+  {t:"HomeHelp", typ:"uy", city:"Andijon", price:"kuniga 130 000 so‘m", tags:["uy"]},
+  {t:"CleanCity", typ:"tozalash", city:"Namangan", price:"oyiga 600 000 so‘m", tags:["ofis"]},
+  {t:"TreeCare", typ:"bog", city:"Andijon", price:"kuniga 145 000 so‘m", tags:["daraxt"]},
+  {t:"ElecFix", typ:"service", city:"Buxoro", price:"soatiga 70 000 so‘m", tags:["elektr"]},
+  {t:"HouseStar", typ:"uy", city:"Toshkent", price:"kuniga 135 000 so‘m", tags:["uy"]},
+  {t:"ShinePro", typ:"tozalash", city:"Buxoro", price:"oyiga 610 000 so‘m", tags:["ofis"]},
+  {t:"GreenLine", typ:"bog", city:"Toshkent", price:"kuniga 150 000 so‘m", tags:["gazon"]},
+  {t:"ServiceOne", typ:"service", city:"Samarqand", price:"soatiga 75 000 so‘m", tags:["usta"]},
+  {t:"HomeCare+", typ:"uy", city:"Namangan", price:"kuniga 140 000 so‘m", tags:["uy"]},
+  {t:"OfficeClean", typ:"tozalash", city:"Andijon", price:"oyiga 590 000 so‘m", tags:["ofis"]},
+  {t:"GardenHelp", typ:"bog", city:"Namangan", price:"kuniga 140 000 so‘m", tags:["gazon"]},
+  {t:"ProService", typ:"service", city:"Andijon", price:"soatiga 68 000 so‘m", tags:["elektr","usta"]},
+  {t:"FamilyCare", typ:"uy", city:"Samarqand", price:"kuniga 135 000 so‘m", tags:["uy"]}
+];
+
+const perPage = 12;
+let page = 1;
+
+function render(){
+  const q = document.getElementById('q').value.toLowerCase().trim();
+  const type = document.getElementById('type').value;
+  const filtered = firms.filter(f =>
+    (!q || (f.t+f.city+f.price).toLowerCase().includes(q)) &&
+    (!type || f.typ===type)
+  );
+  const list = document.getElementById('list');
+  const pager = document.getElementById('pager');
+  const total = filtered.length;
+  const maxPage = Math.max(1, Math.ceil(total/perPage));
+  if(page>maxPage) page = maxPage;
+  const start = (page-1)*perPage;
+  const chunk = filtered.slice(start, start+perPage);
+
+  list.innerHTML = '';
+  chunk.forEach(x=>{
+    const el = document.createElement('div');
+    el.className='card';
+    el.innerHTML = `
+      <div class="av">🏢</div>
+      <div class="meta">
+        <h3>${x.t} ${x.hot?'<span class="badge">Aksiya</span>':''}</h3>
+        <div class="sub">${labelType(x.typ)} • ${x.city}</div>
+        <div class="sub" style="margin-top:4px"><span class="price">${x.price}</span></div>
+        <div class="tags">${x.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>
+      </div>
+      <div><a class="btn" href="./workers.html">Ishchi so‘rash</a></div>`;
+    list.appendChild(el);
+  });
+
+  pager.innerHTML = '';
+  for(let i=1;i<=maxPage;i++){
+    const b = document.createElement('button');
+    b.className = 'page'+(i===page?' active':'');
+    b.textContent = i;
+    b.onclick = ()=>{ page=i; render(); window.scrollTo({top:0,behavior:'smooth'}); };
+    pager.appendChild(b);
+  }
+}
+
+function labelType(t){
+  if(t==='tozalash') return 'Tozalash firmasi';
+  if(t==='bog') return 'Bog‘ xizmati';
+  if(t==='service') return 'Servis/Usta';
+  if(t==='uy') return 'Uy xizmati';
+  return t;
+}
+
+document.getElementById('apply').onclick = ()=>{ page=1; render(); };
+window.addEventListener('DOMContentLoaded', render);
+</script>
+</body>
+</html>
