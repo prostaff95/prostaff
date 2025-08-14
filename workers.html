@@ -1,154 +1,298 @@
 <!DOCTYPE html>
 <html lang="uz">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>PROSTAFF — Ishchilar</title>
+  <title>PROSTAFF — Ishchi kabineti</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
     :root{
-      --bg:#0b1733;
-      --card:#121f3f;
-      --muted:#8fa3c9;
-      --text:#e9f0ff;
-      --brand1:#1773ff;
-      --brand2:#00c2ff;
-      --ok:#27d980;
-      --chip:#1b2b56;
-      --chipText:#cfe0ff;
-      --shadow:0 10px 30px rgba(0,0,0,.25);
+      --bg:#0b1220;
+      --panel:#0f172a;
+      --muted:#94a3b8;
+      --text:#e5e7eb;
+      --line:#1f2a44;
+      --primary:#2563eb;
+      --primary-2:#1d4ed8;
+      --chip:#0b2545;
     }
     *{box-sizing:border-box}
-    html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial}
-    a{color:inherit;text-decoration:none}
-    .nav{display:flex;gap:16px;align-items:center;justify-content:center;padding:18px 12px;background:linear-gradient(90deg,#0b1733,#0f2150)}
-    .nav a{opacity:.85}
-    .nav a.active{opacity:1;font-weight:700}
-    .wrap{max-width:980px;margin:18px auto;padding:0 14px}
-    .filters{background:var(--card);border-radius:16px;padding:14px;display:grid;grid-template-columns:1fr 180px 140px;gap:10px;box-shadow:var(--shadow)}
-    .filters input,.filters select{width:100%;padding:12px 12px;border:1px solid #2a3b6b;border-radius:12px;background:#0e1a39;color:var(--text)}
-    .filters button{border:0;border-radius:12px;background:linear-gradient(90deg,var(--brand1),var(--brand2));color:#fff;font-weight:700}
-    .cards{margin-top:16px;display:grid;gap:16px}
-    .card{background:var(--card);border-radius:18px;padding:16px;display:grid;grid-template-columns:72px 1fr auto;gap:14px;align-items:center;box-shadow:var(--shadow)}
-    .avatar{width:72px;height:72px;border-radius:16px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#23a6d5,#23d5ab)}
-    .avatar span{font-size:34px}
-    .name{font-size:22px;font-weight:700;margin:0 0 2px}
-    .meta{color:var(--muted);font-size:14px;margin:4px 0 10px}
-    .chips{display:flex;gap:8px;flex-wrap:wrap}
-    .chip{background:var(--chip);color:var(--chipText);padding:6px 10px;border-radius:999px;font-size:12px}
-    .rating{display:inline-flex;align-items:center;gap:6px}
-    .rating .star{color:#ffd34d}
-    .price{font-weight:800}
-    .actions{display:flex;flex-direction:column;gap:10px}
-    .btn{padding:12px 16px;border-radius:12px;border:1px solid #2a3b6b;background:#0e1a39;color:#fff;text-align:center;font-weight:700}
-    .btn.primary{border:0;background:linear-gradient(90deg,var(--brand1),var(--brand2))}
-    .verified{color:var(--ok);font-weight:700}
-    @media (max-width:680px){
-      .filters{grid-template-columns:1fr}
-      .card{grid-template-columns:56px 1fr}
-      .actions{grid-column:1 / -1;flex-direction:row}
+    body{
+      margin:0; font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto;
+      background:var(--bg); color:var(--text);
     }
+    a{text-decoration:none;color:inherit}
+    .wrap{max-width:1040px;margin:0 auto;padding:18px}
+    /* Navbar */
+    .nav{
+      position:sticky;top:0;z-index:20;
+      backdrop-filter: blur(8px);
+      background:rgba(11,18,32,.6); border-bottom:1px solid var(--line);
+    }
+    .nav .inner{display:flex;align-items:center;gap:12px;justify-content:space-between;padding:10px 18px}
+    .brand{font-weight:800;letter-spacing:.5px}
+    .tabs{display:flex;gap:6px;flex-wrap:wrap}
+    .tab{
+      padding:8px 12px;border:1px solid var(--line);border-radius:10px;background:#0b2545;color:#e5e7eb
+    }
+    .tab.active{background:var(--primary);border-color:var(--primary-2)}
+    /* Grid & cards */
+    .grid{display:grid;gap:14px}
+    @media(min-width:860px){.grid.col-2{grid-template-columns:1fr 1fr}}
+    @media(min-width:1100px){.grid.col-3{grid-template-columns:1.2fr 1fr 1fr}}
+
+    .card{
+      background:var(--panel); border:1px solid var(--line);
+      border-radius:16px; padding:16px;
+    }
+    .card h3{margin:0 0 10px 0}
+    .row{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+    .avatar{
+      width:64px;height:64px;border-radius:14px;
+      background:#0b2545;border:1px solid var(--line);
+      display:flex;align-items:center;justify-content:center;font-weight:700;
+      font-size:20px;
+    }
+    .chip{background:var(--chip);border:1px solid var(--line);padding:6px 10px;border-radius:999px}
+    .muted{color:var(--muted)}
+    .stat{
+      display:grid;place-items:center;border:1px dashed var(--line);
+      border-radius:14px;padding:16px;min-height:120px
+    }
+
+    /* Buttons */
+    .btn{ padding:10px 14px; border-radius:10px; border:1px solid var(--line);
+      background:#0b2545; color:#e5e7eb; cursor:pointer }
+    .btn.primary{ background:var(--primary); border-color:var(--primary-2) }
+    .btn.ghost{ background:transparent }
+    .btn.block{width:100%}
+
+    /* Modal */
+    #tgModal{
+      position:fixed; inset:0;
+      display:none; align-items:center; justify-content:center;
+      background:rgba(2,6,23,.6); z-index:1000;
+    }
+    #tgModal.open{ display:flex; }
+    .modal-card{
+      width:92%; max-width:560px;
+      background:#0b1220; color:#e5e7eb;
+      border:1px solid var(--line); border-radius:16px;
+      padding:18px;
+    }
+    input, textarea, select{
+      width:100%; padding:10px; border-radius:10px;
+      border:1px solid var(--line); background:#0b1220; color:#e5e7eb;
+      outline:none;
+    }
+    label{display:block;margin:10px 0 6px}
+    .list{display:flex;flex-direction:column;gap:10px}
+    .item{display:flex;align-items:center;justify-content:space-between;border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:#0f1527}
   </style>
 </head>
 <body>
-  <nav class="nav">
-    <a href="index.html">← Bosh sahifa</a>
-    <a href="workers.html" class="active">Ishchilar</a>
-    <a href="services.html">Firmalar →</a>
-  </nav>
+
+  <!-- Navbar -->
+  <div class="nav">
+    <div class="inner wrap">
+      <div class="row">
+        <div class="avatar">P</div>
+        <div>
+          <div class="brand">PROSTAFF</div>
+          <div class="muted" style="font-size:12px">Ishchi kabineti</div>
+        </div>
+      </div>
+      <div class="tabs">
+        <a class="tab" href="index.html">Bosh sahifa</a>
+        <a class="tab active" href="workers.html">Ishchilar</a>
+        <a class="tab" href="services.html">Xizmatlar</a>
+      </div>
+    </div>
+  </div>
 
   <div class="wrap">
-    <!-- FILTRLAR -->
-    <div class="filters">
-      <input id="q" type="search" placeholder="Qidiruv: ism, shahar, kasb..." />
-      <select id="city">
-        <option value="">Shahar (barchasi)</option>
-        <option value="Toshkent">Toshkent</option>
-        <option value="Samarqand">Samarqand</option>
-        <option value="Buxoro">Buxoro</option>
-        <option value="Andijon">Andijon</option>
-        <option value="Namangan">Namangan</option>
-        <option value="Farg‘ona">Farg‘ona</option>
-        <option value="Navoiy">Navoiy</option>
-        <option value="Xorazm">Xorazm</option>
-      </select>
-      <button id="apply">Qo‘llash</button>
+
+    <!-- Telegram sozlama tugmasi -->
+    <div style="margin:10px 0 16px">
+      <button id="openTgModal" class="btn">Telegram sozlamasi</button>
     </div>
 
-    <!-- KARTALAR -->
-    <div id="list" class="cards"></div>
+    <!-- Yuqori karta: profil + tezkor amallar -->
+    <div class="grid col-3">
+      <div class="card">
+        <h3>Profil</h3>
+        <div class="row">
+          <div class="avatar" id="pfAvatar">P</div>
+          <div>
+            <div id="pfName" style="font-weight:700">Aziza Ismoilova</div>
+            <div class="row">
+              <span class="chip" id="pfRole">Tozalovchi</span>
+              <span class="chip" id="pfCity">Samarqand</span>
+              <span class="chip" id="pfRate">120 000 so‘m/kun</span>
+            </div>
+          </div>
+        </div>
+        <div style="height:10px"></div>
+        <div class="row">
+          <button id="readyBtn" class="btn primary">Ishga tayyorman</button>
+          <button class="btn">Reja qo‘shish</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Statistika</h3>
+        <div class="grid col-2">
+          <div class="stat"><div><div class="muted">Bugun</div><div style="font-size:22px;font-weight:800">0 so‘m</div></div></div>
+          <div class="stat"><div><div class="muted">Hafta</div><div style="font-size:22px;font-weight:800">0</div></div></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Tezkor</h3>
+        <div class="list">
+          <div class="item">
+            <div>Bugungi jadval</div>
+            <button class="btn">Ko‘rish</button>
+          </div>
+          <div class="item">
+            <div>So‘nggi buyurtmalar</div>
+            <button class="btn">Ochish</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Buyurtmalar ro‘yxati (namuna) -->
+    <div style="height:18px"></div>
+    <div class="card">
+      <h3>Buyurtmalar (namuna)</h3>
+      <div class="list" id="orders">
+        <!-- JavaScript orqali to‘ldiriladi -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Telegram sozlamasi MODAL -->
+  <div id="tgModal">
+    <div class="modal-card">
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px;">
+        <h3 style="margin:0;font-size:20px;">Telegram bildirishnomasi</h3>
+        <button data-close class="btn ghost">✕</button>
+      </div>
+
+      <p style="opacity:.8;margin:0 0 14px;">
+        Token va chat_id brauzeringizda saqlanadi. Keyinchalik serverga ko‘chiramiz.
+      </p>
+
+      <label>Bot token</label>
+      <input id="tgToken" type="password" placeholder="12345:AA..." />
+
+      <label>Admin chat_id</label>
+      <input id="tgChat" type="text" placeholder="7692677210" />
+
+      <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:14px;">
+        <button id="tgTest" class="btn">Sinov xabari</button>
+        <button data-close class="btn ghost">Bekor qilish</button>
+        <button id="tgSave" class="btn primary">Saqlash</button>
+      </div>
+    </div>
   </div>
 
   <script>
-    // Demo ma'lumotlar (12+ ta)
-    const WORKERS = [
-      {name:'Aziza Ismoilova', role:'Tozalovchi', city:'Samarqand', price:120000, rating:4.9, verified:true, emoji:'🧹'},
-      {name:'Madina M.',       role:'Tozalovchi', city:'Buxoro',    price:125000, rating:4.9, verified:true, emoji:'🧹'},
-      {name:'Gulnora R.',      role:'Tozalovchi', city:'Toshkent',  price:135000, rating:4.8, verified:true, emoji:'🧹'},
-      {name:'Shahnoza U.',     role:'Uy yordamchisi', city:'Toshkent', price:150000, rating:4.7, verified:false, emoji:'🏠'},
-      {name:'Laylo B.',        role:'Bog‘bon',    city:'Namangan',  price:110000, rating:4.6, verified:true, emoji:'🌿'},
-      {name:'Javlon A.',       role:'Yuk tashuvchi', city:'Andijon', price:100000, rating:4.8, verified:true, emoji:'📦'},
-      {name:'Dilnoza K.',      role:'Tozalovchi', city:'Farg‘ona',  price:115000, rating:4.7, verified:false, emoji:'🧽'},
-      {name:'Parvina S.',      role:'Qurilish tozalash', city:'Navoiy', price:160000, rating:4.8, verified:true, emoji:'🏗️'},
-      {name:'Sevara E.',       role:'Tozalovchi', city:'Xorazm',    price:110000, rating:4.6, verified:false, emoji:'🧹'},
-      {name:'Maftuna D.',      role:'Uy yordamchisi', city:'Samarqand', price:140000, rating:4.9, verified:true, emoji:'🏠'},
-      {name:'Otabek N.',       role:'Yuk tushiruvchi', city:'Toshkent', price:105000, rating:4.7, verified:true, emoji:'📦'},
-      {name:'Nigora T.',       role:'Tozalovchi', city:'Buxoro',    price:118000, rating:4.8, verified:true, emoji:'🧹'},
-      {name:'Maxfuzaxon Q.',   role:'Tozalovchi', city:'Farg‘ona',  price:112000, rating:4.7, verified:false, emoji:'🧹'}
+    // --- Demo buyurtmalar (faqat ko‘rsatish uchun) ---
+    const sampleOrders = [
+      {id:'#1024', client:'Javlon', city:'Toshkent', when:'Bugun 16:00', task:'2 xonali uy tozalash'},
+      {id:'#1025', client:'Dilnoza', city:'Samarqand', when:'Ertaga 10:00', task:'Ofis oynalari'},
+      {id:'#1026', client:'Akmal', city:'Buxoro', when:'Juma 09:30', task:'Bog‘ ishlarida yordam'}
     ];
-
-    const listEl = document.getElementById('list');
-    const qEl    = document.getElementById('q');
-    const cityEl = document.getElementById('city');
-    document.getElementById('apply').addEventListener('click', render);
-
-    function fmtPrice(n){ return (n||0).toLocaleString('uz-UZ')+" so‘m/kun"; }
-
-    function workerCard(w){
-      const params = new URLSearchParams({
-        name: w.name,
-        service: w.role,
-        city: w.city,
-        price: w.price
-      }).toString();
-
-      return `
-        <div class="card">
-          <div class="avatar"><span>${w.emoji||'👤'}</span></div>
-          <div>
-            <div class="name">${w.name}</div>
-            <div class="meta">
-              <span class="rating"><span class="star">★</span> ${w.rating}</span>
-              &nbsp;•&nbsp; ${w.role} • ${w.city}
-            </div>
-            <div class="chips">
-              <span class="chip">tozalash</span>
-              ${w.verified ? `<span class="chip verified">tekshirilgan</span>` : ''}
-              <span class="chip price">${fmtPrice(w.price)}</span>
-            </div>
-          </div>
-          <div class="actions">
-            <a class="btn" href="#" onclick="alert('Batafsil ma’lumot demo rejimida.');return false;">Batafsil</a>
-            <a class="btn primary" target="_blank" href="order.html?${params}">Buyurtma berish</a>
-          </div>
+    const ordersEl = document.getElementById('orders');
+    ordersEl.innerHTML = sampleOrders.map(o => `
+      <div class="item">
+        <div>
+          <div style="font-weight:700">${o.id} • ${o.client} — ${o.city}</div>
+          <div class="muted" style="font-size:13px">${o.when} • ${o.task}</div>
         </div>
-      `;
-    }
+        <button class="btn">Batafsil</button>
+      </div>
+    `).join('');
 
-    function render(){
-      const q = (qEl.value||'').toLowerCase().trim();
-      const city = cityEl.value;
-      const rows = WORKERS.filter(w=>{
-        const okQ = !q || [w.name,w.role,w.city].join(' ').toLowerCase().includes(q);
-        const okC = !city || w.city===city;
-        return okQ && okC;
-      }).map(workerCard).join('');
-      listEl.innerHTML = rows || `<div class="meta" style="padding:18px">Hech narsa topilmadi.</div>`;
-    }
+    // --- Telegram modal & xabar yuborish ---
+    (function() {
+      const modal = document.getElementById('tgModal');
+      const openBtn = document.getElementById('openTgModal');
+      const tokenInput = document.getElementById('tgToken');
+      const chatInput  = document.getElementById('tgChat');
+      const testBtn = document.getElementById('tgTest');
+      const saveBtn = document.getElementById('tgSave');
+      const closeBtns = modal.querySelectorAll('[data-close]');
 
-    // Dastlabki chizish
-    render();
+      function loadValues() {
+        tokenInput.value = localStorage.getItem('tg_token') || '';
+        chatInput.value  = localStorage.getItem('tg_chat')  || '';
+      }
+      function open()  { loadValues(); modal.classList.add('open'); }
+      function close() { modal.classList.remove('open'); }
+
+      openBtn.addEventListener('click', open);
+      closeBtns.forEach(b => b.addEventListener('click', close));
+      modal.addEventListener('click', (e) => { if (e.target === modal) close(); });
+      document.addEventListener('keydown', (e)=>{ if (e.key === 'Escape') close(); });
+
+      async function send(text) {
+        const token  = tokenInput.value.trim();
+        const chatId = chatInput.value.trim();
+        if (!token || !chatId) { alert('Token va chat_id kiriting.'); return; }
+
+        try {
+          const res = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+            method: 'POST',
+            headers: {'Content-Type':'application/json'},
+            body: JSON.stringify({ chat_id: chatId, text })
+          });
+          const data = await res.json();
+          if (!data.ok) throw new Error(data.description || 'Telegram API xatosi');
+          alert('Xabar yuborildi ✅');
+        } catch (err) {
+          alert('Yuborilmadi: ' + err.message);
+        }
+      }
+
+      testBtn.addEventListener('click', () => {
+        send('Sinov xabari: PROSTAFF ishchi kabineti');
+      });
+
+      saveBtn.addEventListener('click', () => {
+        localStorage.setItem('tg_token', tokenInput.value.trim());
+        localStorage.setItem('tg_chat',  chatInput.value.trim());
+        close();
+        alert('Saqlandi ✅');
+      });
+
+      // Global funksiya — boshqa joylardan ham chaqirish mumkin
+      window.sendTelegram = async function(message) {
+        const token  = localStorage.getItem('tg_token');
+        const chatId = localStorage.getItem('tg_chat');
+        if (!token || !chatId) return false;
+        try {
+          const res = await fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+            method: 'POST',
+            headers: {'Content-Type':'application/json'},
+            body: JSON.stringify({ chat_id: chatId, text: message })
+          });
+          const data = await res.json();
+          return !!data.ok;
+        } catch (e) { return false; }
+      };
+    })();
+
+    // --- Namuna: Ishga tayyorman tugmasi bosilganda xabar yuborish ---
+    document.getElementById('readyBtn').addEventListener('click', async () => {
+      const ok = await window.sendTelegram('📣 Ishchi tayyor: Aziza Ismoilova (Samarqand). 🧹 120 000 so‘m/kun');
+      if (!ok) alert('Telegram sozlamalarini to‘ldiring (token / chat_id).');
+      else alert('Holatingiz “tayyor” yuborildi ✅');
+    });
   </script>
 </body>
 </html>
