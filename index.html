@@ -1,72 +1,416 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="uz">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>PROSTAFF — Ishchi va Xizmat Platformasi</title>
-  <meta name="theme-color" content="#0b5ed7" />
-  <style>
-    :root{--blue:#0b5ed7;--blue2:#0a4bb0;--bg:#0b1220;--card:#0f172a;--mut:#94a3b8;--text:#e5e7eb;--r:18px;}
-    *{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Arial,sans-serif;background:linear-gradient(180deg,#0b1220,#0a0f1e);color:var(--text)}
-    header{position:sticky;top:0;background:linear-gradient(90deg,#0b1f4e,#0a1a3f);border-bottom:1px solid #1e293b}
-    .top{max-width:1180px;margin:0 auto;padding:14px 16px;display:flex;justify-content:space-between;align-items:center}
-    .brand{display:flex;gap:10px;align-items:center;font-weight:900}.logo{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(135deg,#22d3ee,#0ea5e9);color:#002}
-    .wrap{max-width:1180px;margin:0 auto;padding:20px 16px}
-    .hero{border-radius:22px;padding:26px;background:linear-gradient(180deg,#0f1b3a,#0f1831);border:1px solid #1e293b;box-shadow:0 18px 40px #0009}
-    .hero h1{margin:0 0 6px;font-size:clamp(22px,4vw,40px);background:linear-gradient(90deg,#e6f0ff,#9ddcff);-webkit-background-clip:text;background-clip:text;color:transparent}
-    .hero p{margin:0;color:#b8c7dd}
-    .cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
-    .btn{background:linear-gradient(180deg,#0ea5e9,#0b5ed7);color:#fff;border:none;border-radius:14px;padding:12px 16px;font-weight:900;cursor:pointer}
-    .btn.ghost{background:#0f1d3b;border:1px solid #21406d;color:#cfe7ff}
-    .grid{margin-top:18px;display:grid;gap:14px;grid-template-columns:repeat(2,minmax(0,1fr))}
-    @media(min-width:760px){.grid{grid-template-columns:repeat(4,1fr)}}
-    .card{border-radius:18px;padding:18px;border:1px solid #1f2a44;background:#0f1d3b;box-shadow:0 12px 26px #0009;cursor:pointer;text-align:center}
-    .card .icon{font-size:30px}
-    .card a{display:block;margin-top:8px;font-weight:800;color:#cfe7ff;text-decoration:none}
-    footer{padding:28px;text-align:center;color:#7e9abf}
-  </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>PROSTAFF — Ishchi kabinasi</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0b1220; --card:#121a2b; --muted:#8aa2c0; --text:#e8f0ff;
+    --pri:#2e7aff; --pri2:#5aa2ff; --ok:#16c784; --warn:#ffb847; --err:#ff5d5d;
+    --ring: rgba(46,122,255,.35);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif}
+  a{color:var(--pri);text-decoration:none}
+  .wrap{max-width:1100px;margin:0 auto;padding:20px}
+  header{display:flex;gap:12px;align-items:center;justify-content:space-between;margin-bottom:16px}
+  .brand{font-weight:800;letter-spacing:.6px}
+  .nav{display:flex;gap:8px;flex-wrap:wrap}
+  .btn{border:0;border-radius:10px;padding:10px 14px;background:#1a2440;color:#e9f2ff;cursor:pointer;font-weight:600}
+  .btn:hover{filter:brightness(1.05)}
+  .btn.pri{background:linear-gradient(135deg,var(--pri),var(--pri2));color:#fff;box-shadow:0 0 0 0 var(--ring)}
+  .btn.ok{background:linear-gradient(135deg,#12b76a,#16c784)}
+  .btn.err{background:linear-gradient(135deg,#ff6b6b,#ff4d4f)}
+  .btn.warn{background:linear-gradient(135deg,#ffb847,#ff9f1a)}
+  .grid{display:grid;gap:16px}
+  @media(min-width:900px){ .grid.col-3{grid-template-columns:1.4fr 1fr 1fr} }
+  .card{background:var(--card);border:1px solid #21304a66;border-radius:16px;padding:16px;box-shadow:0 6px 24px rgba(0,0,0,.25)}
+  .card h3{margin:0 0 10px}
+  .muted{color:var(--muted)}
+  .row{display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+  .chip{padding:6px 10px;border-radius:999px;background:#18223a;border:1px solid #2a3b58;color:#cfe0ff;font-size:12px}
+  .avatar{width:64px;height:64px;border-radius:14px;background:linear-gradient(135deg,#4cc9f0,#4361ee);display:grid;place-items:center;font-weight:800}
+  .switch{--h:28px;position:relative;width:56px;height:var(--h);background:#202b46;border-radius:999px;cursor:pointer;border:1px solid #2b3b5f}
+  .switch input{display:none}
+  .switch::after{content:"";position:absolute;top:50%;left:4px;translate:0 -50%;width:22px;height:22px;border-radius:50%;background:#c1d4ff;transition:.2s}
+  .switch.on{background:#103a21;border-color:#185c36;box-shadow:0 0 0 6px var(--ring)}
+  .switch.on::after{left:30px;background:#d7ffee}
+  .list{display:grid;gap:12px;margin-top:8px}
+  .order{background:#0f1830;border:1px solid #233558;border-radius:14px;padding:14px;display:grid;gap:8px}
+  .order .row{justify-content:space-between}
+  .order .ttl{font-weight:700}
+  .divider{height:1px;background:#22325155;margin:10px 0}
+  .kpi{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+  .kpi .it{background:#0f1830;border:1px solid #233558;border-radius:12px;padding:12px;text-align:center}
+  .kpi .n{font-size:20px;font-weight:800}
+  .pill{display:inline-flex;align-items:center;gap:6px;padding:6px 10px;border-radius:999px;background:#12203e;border:1px solid #23385d;font-size:12px}
+  .footer{margin:28px 0 8px;color:#6f8db4;text-align:center;font-size:13px}
+  .input, select, textarea{width:100%;padding:10px 12px;border-radius:10px;border:1px solid #2a3c5c;background:#0f1830;color:#e9f2ff}
+  textarea{min-height:90px;resize:vertical}
+  .inline{display:flex;gap:10px;flex-wrap:wrap}
+  .tag{font-size:12px;color:#9fb6d6;background:#16243f;border:1px solid #2b416b;padding:4px 8px;border-radius:8px}
+  .hidden{display:none}
+  .toast{position:fixed;right:16px;bottom:16px;background:#0f1830;border:1px solid #2b3d60;color:#dff6ff;padding:12px 14px;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.35)}
+</style>
 </head>
 <body>
-  <header>
-    <div class="top">
-      <div class="brand"><div class="logo">P</div><div>PROSTAFF</div></div>
-      <nav>
-        <a class="btn ghost" href="./workers.html">Ishchilar</a>
-        <a class="btn ghost" href="./services.html">Xizmatlar</a>
-      </nav>
-    </div>
-  </header>
-
   <div class="wrap">
-    <section class="hero">
-      <h1>Kunlik va doimiy ishchilarni 3 daqiqada toping</h1>
-      <p>Tozalash, bog‘ ishlari, uy xizmati yoki ustalar. Xavfsiz, tekshirilgan profil va tez yetkazib berish.</p>
-      <div class="cta">
-        <a class="btn" href="./workers.html">Ishchilar ro‘yxati</a>
-        <a class="btn ghost" href="./services.html">Xizmat ko‘rsatuvchi firmalar</a>
+    <header>
+      <div class="row">
+        <div class="avatar">P</div>
+        <div>
+          <div class="brand">PROSTAFF</div>
+          <div class="muted" id="subtitle">Ishchi kabinasi</div>
+        </div>
       </div>
-    </section>
+      <div class="nav">
+        <a class="btn" href="index.html">Bosh sahifa</a>
+        <a class="btn" href="workers.html">Ishchilar</a>
+        <a class="btn" href="services.html">Xizmatlar</a>
+        <button class="btn pri" id="btnSetup">Telegram sozlamasi</button>
+      </div>
+    </header>
 
-    <div class="grid">
+    <!-- Top cards -->
+    <div class="grid col-3">
       <div class="card">
-        <div class="icon">🧹</div>
-        <a href="./workers.html?cat=tozalash">Tozalash bo‘limi</a>
+        <h3>Profil</h3>
+        <div class="row">
+          <div class="avatar" id="pfAvatar">A</div>
+          <div>
+            <div class="row">
+              <strong id="pfName">Aziza Ismoilova</strong>
+              <span class="chip" id="pfRole">Tozalovchi</span>
+              <span class="chip" id="pfCity">Samarqand</span>
+            </div>
+            <div class="muted" style="margin-top:6px">Reyting: ⭐ <span id="pfRate">4.9</span> • buyurtmalar: <span id="pfJobs">57</span></div>
+          </div>
+        </div>
+        <div class="divider"></div>
+        <div class="row" style="justify-content:space-between">
+          <div class="row">
+            <span class="pill"><span style="width:8px;height:8px;background:#16c784;border-radius:50%"></span> Holat:
+              <b id="statusText" style="margin-left:6px">Bo‘sh</b></span>
+          </div>
+          <label class="switch" id="toggle">
+            <input type="checkbox" />
+          </label>
+        </div>
       </div>
+
       <div class="card">
-        <div class="icon">🌿</div>
-        <a href="./workers.html?cat=bog">Bog‘ ishlari</a>
+        <h3>Daromad</h3>
+        <div class="kpi">
+          <div class="it"><div class="n" id="kpiToday">0</div><div class="muted">Bugun (so‘m)</div></div>
+          <div class="it"><div class="n" id="kpiWeek">0</div><div class="muted">Hafta</div></div>
+          <div class="it"><div class="n" id="kpiMonth">0</div><div class="muted">Oy</div></div>
+        </div>
+        <div class="divider"></div>
+        <div class="inline">
+          <span class="tag">To‘langan: <b id="paidCnt">0</b></span>
+          <span class="tag">Kutilyapti: <b id="unpaidCnt">0</b></span>
+        </div>
       </div>
+
       <div class="card">
-        <div class="icon">🏠</div>
-        <a href="./workers.html?cat=uy">Uy xizmati</a>
-      </div>
-      <div class="card">
-        <div class="icon">🛠️</div>
-        <a href="./services.html">Xizmat ko‘rsatish (firmalar)</a>
+        <h3>Jadval</h3>
+        <div class="muted" style="margin-bottom:8px">Qaysi kunlar ishlaysiz?</div>
+        <div class="inline" id="week">
+          <!-- JS to‘ldiradi -->
+        </div>
+        <div class="divider"></div>
+        <div class="row">
+          <input class="input" id="hours" placeholder="Masalan: 09:00 – 18:00" />
+          <button class="btn ok" id="saveSched">Saqlash</button>
+        </div>
       </div>
     </div>
+
+    <!-- NEW ORDERS -->
+    <div class="card" style="margin-top:16px">
+      <h3>Yangi buyurtmalar</h3>
+      <div id="orders" class="list"></div>
+      <div id="noOrders" class="muted">Hozircha yangi buyurtma yo‘q.</div>
+    </div>
+
+    <!-- MY JOBS -->
+    <div class="card" style="margin-top:16px">
+      <h3>Mening ishlarim</h3>
+      <div id="myJobs" class="list"></div>
+      <div id="noJobs" class="muted">Hali ish qabul qilmagansiz.</div>
+    </div>
+
+    <!-- ORDER DETAILS MODAL (simple) -->
+    <div id="modal" class="hidden" style="position:fixed;inset:0;background:rgba(3,6,16,.55);display:grid;place-items:center;padding:16px">
+      <div class="card" style="max-width:560px;width:100%;position:relative">
+        <h3 id="mTitle">Buyurtma</h3>
+        <div class="muted" id="mMeta"></div>
+        <div class="divider"></div>
+        <div id="mDesc" style="white-space:pre-wrap;line-height:1.6"></div>
+        <div class="divider"></div>
+        <div id="mTags" class="inline"></div>
+        <div class="divider"></div>
+        <div class="row" style="justify-content:space-between">
+          <button class="btn err" id="mReject">Rad etish</button>
+          <div class="row">
+            <button class="btn" id="mClose">Yopish</button>
+            <button class="btn ok" id="mAccept">Qabul qilish</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TELEGRAM SETUP -->
+    <div id="tgCfg" class="hidden" style="position:fixed;inset:0;background:rgba(3,6,16,.55);display:grid;place-items:center;padding:16px">
+      <div class="card" style="max-width:520px;width:100%">
+        <h3>Telegram bildirishnomasi</h3>
+        <div class="muted">Token va chat_id ni brauzeringizda mahalliy saqlash orqali xabar yuboramiz.
+          <b>Frontendda token saqlash xavfsiz emas</b>, keyinchalik serverga o‘tkazamiz.</div>
+        <div class="divider"></div>
+        <label>Bot token</label>
+        <input class="input" id="tgToken" placeholder="12345:AA...">
+        <label style="margin-top:8px">Admin chat_id</label>
+        <input class="input" id="tgChat" placeholder="7692677210">
+        <div class="divider"></div>
+        <div class="row" style="justify-content:space-between">
+          <button class="btn" id="tgTest">Sinov xabari</button>
+          <div class="row">
+            <button class="btn" id="tgCancel">Bekor qilish</button>
+            <button class="btn pri" id="tgSave">Saqlash</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">© PROSTAFF — ishchi kabinasi</div>
   </div>
 
-  <footer>© 2025 PROSTAFF</footer>
+  <div id="toast" class="toast hidden"></div>
+
+<script>
+/* ====== KICHIK YORDAMCHI ====== */
+const $ = s => document.querySelector(s);
+const el = (t,cls) => { const n=document.createElement(t); if(cls) n.className=cls; return n; };
+function toast(msg){ const t=$("#toast"); t.textContent=msg; t.classList.remove("hidden");
+  setTimeout(()=>t.classList.add("hidden"), 2600);
+}
+function money(n){ return (n||0).toLocaleString('uz-UZ'); }
+
+/* ====== MA'LUMOTLAR (Mock) ====== */
+const worker = JSON.parse(localStorage.getItem("pf") || "{}");
+if(!worker.name){ Object.assign(worker,{
+  name:"Aziza Ismoilova", role:"Tozalovchi", city:"Samarqand",
+  rate:4.9, jobs:57, available:true, hours:"09:00 – 18:00",
+  week:["Du","Se","Ch","Pa","Ju"]
+});}
+
+const sampleOrders = [
+  {id:"ORD-2315", title:"Kvartira tozalash", city:"Samarqand, Uzbekiston ko‘chasi 12/4",
+   when:"Ertaga 09:00", wage:120000, note:"2 xonali kvartira. Changyutgich bor. Oyna artish ham kerak.",
+   tags:["Tozalash","1 kun","Favqulodda"], phone:"+998 90 123-45-67"},
+  {id:"ORD-2316", title:"Ofis tozalash (kichik)", city:"Samarqand, Registon 7",
+   when:"Bugun 17:00", wage:180000, note:"40 m² maydon, stol-stul artish, pol yuvish.",
+   tags:["Ofis","Bugun"], phone:"+998 97 000-22-11"},
+  {id:"ORD-2317", title:"Bog‘ ishlarini supurish", city:"Buxoro, Afrosiyob 5",
+   when:"Shanba 08:30", wage:150000, note:"Bog‘ yo‘laklarini tozalash, barglarni yig‘ish.",
+   tags:["Bog‘","Yengil ish"], phone:"+998 93 777-66-55"}
+];
+let myJobs = JSON.parse(localStorage.getItem("myJobs")||"[]");
+
+/* ====== UI GA YUKLASH ====== */
+function loadProfile(){
+  $("#pfName").textContent = worker.name;
+  $("#pfRole").textContent = worker.role;
+  $("#pfCity").textContent = worker.city;
+  $("#pfRate").textContent = worker.rate;
+  $("#pfJobs").textContent = worker.jobs;
+  $("#pfAvatar").textContent = (worker.name||"")[0]?.toUpperCase() || "I";
+
+  const tog=$("#toggle");
+  if(worker.available) tog.classList.add("on");
+  $("#statusText").textContent = worker.available ? "Bo‘sh" : "Band";
+}
+function loadWeek(){
+  const days=["Du","Se","Ch","Pa","Ju","Sh","Ya"];
+  const w=$("#week"); w.innerHTML="";
+  days.forEach(d=>{
+    const chk=el("label","tag");
+    const input=el("input"); input.type="checkbox"; input.value=d;
+    if(worker.week?.includes(d)) input.checked=true;
+    chk.append(input," ",d);
+    input.addEventListener("change",()=>{
+      worker.week = [...w.querySelectorAll("input:checked")].map(i=>i.value);
+      localStorage.setItem("pf", JSON.stringify(worker));
+    });
+    w.append(chk);
+  });
+  $("#hours").value = worker.hours || "";
+}
+function loadOrders(){
+  const box=$("#orders"); box.innerHTML="";
+  if(sampleOrders.length===0){ $("#noOrders").style.display="block"; return; }
+  $("#noOrders").style.display="none";
+  sampleOrders.forEach(o=>{
+    const card=el("div","order");
+    const top=el("div","row");
+    const ttl=el("div","ttl"); ttl.textContent=o.title;
+    const pay=el("div","chip"); pay.textContent= money(o.wage) + " so‘m";
+    top.append(ttl,pay);
+
+    const meta=el("div","muted");
+    meta.textContent = o.city + " • " + o.when;
+    const tags=el("div","inline");
+    o.tags.forEach(t=>{ const tg=el("span","tag"); tg.textContent=t; tags.append(tg); });
+
+    const actions=el("div","row"); actions.style.justifyContent="flex-end";
+    const more=el("button","btn"); more.textContent="Batafsil";
+    more.addEventListener("click",()=>openModal(o));
+    const accept=el("button","btn ok"); accept.textContent="Qabul qilish";
+    accept.addEventListener("click",()=>acceptOrder(o));
+    actions.append(more,accept);
+
+    card.append(top,meta,tags,actions);
+    box.append(card);
+  });
+}
+function loadMyJobs(){
+  const wrap=$("#myJobs"); wrap.innerHTML="";
+  if(!myJobs.length){ $("#noJobs").style.display="block"; return; }
+  $("#noJobs").style.display="none";
+  myJobs.forEach(j=>{
+    const card=el("div","order");
+    const top=el("div","row");
+    const ttl=el("div","ttl"); ttl.textContent=j.title+" • "+j.when;
+    const st=el("div","chip"); st.textContent=j.status||"Qabul qilindi";
+    top.append(ttl,st);
+    const meta=el("div","muted");
+    meta.textContent=j.city + " • aloqa: " + j.phone;
+    const actions=el("div","row"); actions.style.justifyContent="space-between";
+    const done=el("button","btn warn"); done.textContent="Ish tugadi";
+    done.addEventListener("click",()=>{
+      j.status="Yakunlandi"; saveJobs(); loadMyJobs(); incPay(j.wage);
+      sendTelegram("Ish yakunlandi ✅", j);
+    });
+    const call=el("a","btn"); call.textContent="Qo‘ng‘iroq"; call.href="tel:"+j.phone.replace(/\s/g,"");
+    actions.append(done,call);
+    card.append(top,meta,actions);
+    wrap.append(card);
+  });
+}
+
+/* ====== HOLAT / JADVAL ====== */
+$("#toggle").addEventListener("click", e=>{
+  const sw=$("#toggle"); sw.classList.toggle("on");
+  worker.available = sw.classList.contains("on");
+  $("#statusText").textContent = worker.available?"Bo‘sh":"Band";
+  localStorage.setItem("pf", JSON.stringify(worker));
+  toast(worker.available?"Ishga tayyor holat yoqildi":"Holat: band");
+});
+
+$("#saveSched").addEventListener("click",()=>{
+  worker.hours = $("#hours").value.trim();
+  localStorage.setItem("pf", JSON.stringify(worker));
+  toast("Jadval saqlandi");
+});
+
+/* ====== BUYURTMA MODAL ====== */
+let activeOrder=null;
+function openModal(o){
+  activeOrder=o;
+  $("#mTitle").textContent = o.title + " — " + money(o.wage)+" so‘m";
+  $("#mMeta").textContent = o.city + " • " + o.when + " • tel: "+o.phone;
+  $("#mDesc").textContent = o.note || "";
+  const t=$("#mTags"); t.innerHTML=""; o.tags.forEach(v=>{ const s=el("span","tag"); s.textContent=v; t.append(s); });
+  $("#modal").classList.remove("hidden");
+}
+$("#mClose").onclick=()=>$("#modal").classList.add("hidden");
+$("#mReject").onclick=()=>{
+  $("#modal").classList.add("hidden");
+  toast("Buyurtma rad etildi");
+  if(activeOrder) sendTelegram("Buyurtma rad etildi ❌", activeOrder);
+}
+$("#mAccept").onclick=()=>{ if(!activeOrder) return;
+  acceptOrder(activeOrder,true);
+  $("#modal").classList.add("hidden");
+};
+
+function acceptOrder(o, fromModal=false){
+  myJobs.push({...o,status:"Qabul qilindi"});
+  saveJobs(); loadMyJobs();
+  // ro‘yxatdan olib tashlaymiz
+  const idx = sampleOrders.findIndex(x=>x.id===o.id);
+  if(idx>-1){ sampleOrders.splice(idx,1); loadOrders(); }
+  toast("Buyurtma qabul qilindi");
+  sendTelegram("Yangi buyurtma qabul qilindi ✅", o);
+}
+
+/* ====== DAROMAD ====== */
+function incPay(sum){
+  const today = Number(localStorage.getItem("payToday")||0)+sum;
+  const week  = Number(localStorage.getItem("payWeek")||0)+sum;
+  const month = Number(localStorage.getItem("payMonth")||0)+sum;
+  localStorage.setItem("payToday",today);
+  localStorage.setItem("payWeek",week);
+  localStorage.setItem("payMonth",month);
+  renderPay();
+}
+function renderPay(){
+  $("#kpiToday").textContent = money(Number(localStorage.getItem("payToday")||0));
+  $("#kpiWeek").textContent  = money(Number(localStorage.getItem("payWeek")||0));
+  $("#kpiMonth").textContent = money(Number(localStorage.getItem("payMonth")||0));
+  const done = myJobs.filter(j=>j.status==="Yakunlandi").length;
+  $("#paidCnt").textContent = done;
+  $("#unpaidCnt").textContent = Math.max(0, myJobs.length - done);
+}
+function saveJobs(){ localStorage.setItem("myJobs", JSON.stringify(myJobs)); }
+
+/* ====== TELEGRAM ====== */
+const TG_KEY="tg_cfg_v1";
+function getTg(){ try{return JSON.parse(localStorage.getItem(TG_KEY)||"{}")}catch{return{}} }
+function setTg(v){ localStorage.setItem(TG_KEY, JSON.stringify(v)); }
+async function sendTelegram(title, obj){
+  const cfg=getTg();
+  if(!cfg.token || !cfg.chat){ console.warn("TG sozlanmagan"); return; }
+  const msg = `*${title}*\n`+
+    `ID: ${obj.id||"-"}\n`+
+    `Nom: ${obj.title||"-"}\n`+
+    `Manzil: ${obj.city||"-"}\n`+
+    `Vaqt: ${obj.when||"-"}\n`+
+    `Narx: ${money(obj.wage||0)} so'm\n`+
+    `Tel: ${obj.phone||"-"}`;
+  try{
+    await fetch(`https://api.telegram.org/bot${cfg.token}/sendMessage`,{
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body: JSON.stringify({chat_id: cfg.chat, text: msg, parse_mode:"Markdown"})
+    });
+  }catch(e){ console.error(e); }
+}
+
+$("#btnSetup").onclick = ()=> {
+  const cfg=getTg();
+  $("#tgToken").value = cfg.token||"";
+  $("#tgChat").value  = cfg.chat||"";
+  $("#tgCfg").classList.remove("hidden");
+};
+$("#tgCancel").onclick = ()=>$("#tgCfg").classList.add("hidden");
+$("#tgSave").onclick = ()=>{
+  setTg({token:$("#tgToken").value.trim(), chat: $("#tgChat").value.trim()});
+  $("#tgCfg").classList.add("hidden");
+  toast("Telegram sozlandi");
+};
+$("#tgTest").onclick = ()=> sendTelegram("Sinov xabari", {id:"TEST",title:"Test",city:"-",when:new Date().toLocaleString("uz-UZ"),wage:0,phone:"-"});
+
+/* ====== START ====== */
+loadProfile(); loadWeek(); loadOrders(); loadMyJobs(); renderPay();
+
+/* Push ruxsatini so‘rash (xohish bo‘yicha) */
+if("Notification" in window && Notification.permission==="default"){
+  Notification.requestPermission();
+}
+</script>
 </body>
 </html>
