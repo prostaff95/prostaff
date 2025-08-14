@@ -3,136 +3,140 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>PROSTAFF — Xizmat ko‘rsatuvchi firmalar</title>
+  <title>PROSTAFF — Firmalar</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
-    :root{--bg:#0b1220;--card:#0f172a;--text:#e5e7eb;--mut:#94a3b8;--line:#1e293b;--pri:#0b5ed7;--r:18px;}
-    *{box-sizing:border-box} body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Arial,sans-serif;background:linear-gradient(180deg,#0b1220,#0a0f1e);color:var(--text)}
-    header{position:sticky;top:0;background:linear-gradient(90deg,#0b1f4e,#0a1a3f);border-bottom:1px solid var(--line)}
-    .top{max-width:1180px;margin:0 auto;padding:14px 16px;display:flex;gap:10px;align-items:center;justify-content:space-between}
-    a{color:#cfe7ff;text-decoration:none} .btn{background:linear-gradient(180deg,#0ea5e9,#0b5ed7);border:none;border-radius:12px;padding:10px 14px;color:#fff;font-weight:800;cursor:pointer}
-    .wrap{max-width:1180px;margin:0 auto;padding:18px 16px}
-    .panel{background:linear-gradient(180deg,#0f1d3b,#0c1732);border:1px solid var(--line);border-radius:var(--r);padding:16px;box-shadow:0 18px 40px #0009}
-    .filters{display:grid;gap:10px;grid-template-columns:1fr 1fr 120px}
-    @media(max-width:760px){.filters{grid-template-columns:1fr 1fr}}
-    input,select{width:100%;padding:10px;border-radius:10px;border:1px solid #203255;background:#0b1428;color:#dbeafe}
-    .grid{margin-top:16px;display:grid;gap:12px;grid-template-columns:repeat(1,1fr)}
-    @media(min-width:860px){.grid{grid-template-columns:repeat(3,1fr)}}
-    .card{background:#0f1d3b;border:1px solid var(--line);border-radius:16px;padding:14px;display:flex;gap:12px;align-items:center;box-shadow:0 10px 24px #0009}
-    .av{width:60px;height:60px;border-radius:16px;display:grid;place-items:center;background:#17233f;color:#9ddcff;font-size:26px;border:1px solid #274a80}
-    .meta{flex:1}.meta h3{margin:0}.sub{color:#9fb3ce;font-size:14px}.price{color:#b9f7ff;font-weight:900}
-    .tags{margin-top:6px;display:flex;gap:6px;flex-wrap:wrap}.tag{font-size:12px;padding:4px 8px;border-radius:999px;border:1px solid #264a7f;background:#0d1b34;color:#b9d3ff}
-    .badge{margin-left:4px;font-size:11px;padding:2px 6px;border-radius:999px;background:#0b2a50;color:#a5d8ff;border:1px solid #21406d}
-    .pagination{display:flex;gap:8px;justify-content:center;margin:16px 0}
-    .page{padding:8px 12px;border-radius:10px;border:1px solid #21406d;background:#0f1d3b;color:#cfe7ff;cursor:pointer}
-    .page.active{background:linear-gradient(180deg,#0ea5e9,#0b5ed7);color:#fff;border:none}
+    :root{
+      --bg:#0b1733; --card:#121f3f; --muted:#8fa3c9; --text:#e9f0ff;
+      --brand1:#1773ff; --brand2:#00c2ff; --ok:#27d980;
+      --chip:#1b2b56; --chipText:#cfe0ff; --shadow:0 10px 30px rgba(0,0,0,.25);
+    }
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial}
+    a{color:inherit;text-decoration:none}
+    .nav{display:flex;gap:16px;align-items:center;justify-content:center;padding:18px 12px;background:linear-gradient(90deg,#0b1733,#0f2150)}
+    .nav a{opacity:.85}
+    .nav a.active{opacity:1;font-weight:700}
+    .wrap{max-width:980px;margin:18px auto;padding:0 14px}
+    .filters{background:var(--card);border-radius:16px;padding:14px;display:grid;grid-template-columns:1fr 180px 140px;gap:10px;box-shadow:var(--shadow)}
+    .filters input,.filters select{width:100%;padding:12px;border:1px solid #2a3b6b;border-radius:12px;background:#0e1a39;color:var(--text)}
+    .filters button{border:0;border-radius:12px;background:linear-gradient(90deg,var(--brand1),var(--brand2));color:#fff;font-weight:700}
+    .cards{margin-top:16px;display:grid;gap:16px}
+    .card{background:var(--card);border-radius:18px;padding:16px;display:grid;grid-template-columns:72px 1fr auto;gap:14px;align-items:center;box-shadow:var(--shadow)}
+    .logo{width:72px;height:72px;border-radius:16px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#23a6d5,#23d5ab);font-size:30px;font-weight:800}
+    .name{font-size:22px;font-weight:700;margin:0 0 2px}
+    .meta{color:var(--muted);font-size:14px;margin:4px 0 10px}
+    .chips{display:flex;gap:8px;flex-wrap:wrap}
+    .chip{background:var(--chip);color:var(--chipText);padding:6px 10px;border-radius:999px;font-size:12px}
+    .rating{display:inline-flex;align-items:center;gap:6px}
+    .rating .star{color:#ffd34d}
+    .actions{display:flex;flex-direction:column;gap:10px}
+    .btn{padding:12px 16px;border-radius:12px;border:1px solid #2a3b6b;background:#0e1a39;color:#fff;text-align:center;font-weight:700}
+    .btn.primary{border:0;background:linear-gradient(90deg,var(--brand1),var(--brand2))}
+    @media (max-width:680px){
+      .filters{grid-template-columns:1fr}
+      .card{grid-template-columns:56px 1fr}
+      .actions{grid-column:1 / -1;flex-direction:row}
+    }
   </style>
 </head>
 <body>
-  <header>
-    <div class="top">
-      <a href="./index.html">← Bosh sahifa</a>
-      <strong>Firmalar</strong>
-      <a href="./workers.html">Ishchilar →</a>
-    </div>
-  </header>
+  <nav class="nav">
+    <a href="index.html">← Bosh sahifa</a>
+    <a href="workers.html">Ishchilar</a>
+    <a href="services.html" class="active">Firmalar →</a>
+  </nav>
 
   <div class="wrap">
-    <div class="panel">
-      <div class="filters">
-        <input id="q" placeholder="Qidiruv: firma nomi, shahar..." />
-        <select id="type">
-          <option value="">Turi (barchasi)</option>
-          <option value="tozalash">Tozalash firmasi</option>
-          <option value="bog">Bog‘ xizmati</option>
-          <option value="service">Servis/Usta</option>
-          <option value="uy">Uy xizmati</option>
-        </select>
-        <button class="btn" id="apply">Qo‘llash</button>
-      </div>
+    <!-- FILTRLAR -->
+    <div class="filters">
+      <input id="q" type="search" placeholder="Qidiruv: firma nomi, shahar, yo‘nalish..." />
+      <select id="city">
+        <option value="">Shahar (barchasi)</option>
+        <option value="Toshkent">Toshkent</option>
+        <option value="Samarqand">Samarqand</option>
+        <option value="Buxoro">Buxoro</option>
+        <option value="Andijon">Andijon</option>
+        <option value="Namangan">Namangan</option>
+        <option value="Farg‘ona">Farg‘ona</option>
+        <option value="Navoiy">Navoiy</option>
+        <option value="Xorazm">Xorazm</option>
+      </select>
+      <button id="apply">Qo‘llash</button>
     </div>
 
-    <div class="grid" id="list"></div>
-    <div class="pagination" id="pager"></div>
+    <div id="list" class="cards"></div>
   </div>
 
-<script>
-const firms = [
-  {t:"CleanPro Samarqand", typ:"tozalash", city:"Samarqand", price:"oyiga 600 000 so‘m obuna", tags:["ofis","mehmonxona"], hot:true},
-  {t:"GreenGarden", typ:"bog", city:"Samarqand", price:"kuniga 150 000 so‘m", tags:["gazon","daraxt kesish"]},
-  {t:"FixIt Usta", typ:"service", city:"Toshkent", price:"soatiga 70 000 so‘m", tags:["elektr","usta"], hot:true},
-  {t:"HouseCare", typ:"uy", city:"Samarqand", price:"kuniga 140 000 so‘m", tags:["uy tozalash"]},
-  {t:"ProClean", typ:"tozalash", city:"Toshkent", price:"oyiga 650 000 so‘m", tags:["ofis"]},
-  {t:"GardenArt", typ:"bog", city:"Buxoro", price:"kuniga 140 000 so‘m", tags:["gazon"]},
-  {t:"ElecMaster", typ:"service", city:"Namangan", price:"soatiga 65 000 so‘m", tags:["elektr"]},
-  {t:"HomeHelp", typ:"uy", city:"Andijon", price:"kuniga 130 000 so‘m", tags:["uy"]},
-  {t:"CleanCity", typ:"tozalash", city:"Namangan", price:"oyiga 600 000 so‘m", tags:["ofis"]},
-  {t:"TreeCare", typ:"bog", city:"Andijon", price:"kuniga 145 000 so‘m", tags:["daraxt"]},
-  {t:"ElecFix", typ:"service", city:"Buxoro", price:"soatiga 70 000 so‘m", tags:["elektr"]},
-  {t:"HouseStar", typ:"uy", city:"Toshkent", price:"kuniga 135 000 so‘m", tags:["uy"]},
-  {t:"ShinePro", typ:"tozalash", city:"Buxoro", price:"oyiga 610 000 so‘m", tags:["ofis"]},
-  {t:"GreenLine", typ:"bog", city:"Toshkent", price:"kuniga 150 000 so‘m", tags:["gazon"]},
-  {t:"ServiceOne", typ:"service", city:"Samarqand", price:"soatiga 75 000 so‘m", tags:["usta"]},
-  {t:"HomeCare+", typ:"uy", city:"Namangan", price:"kuniga 140 000 so‘m", tags:["uy"]},
-  {t:"OfficeClean", typ:"tozalash", city:"Andijon", price:"oyiga 590 000 so‘m", tags:["ofis"]},
-  {t:"GardenHelp", typ:"bog", city:"Namangan", price:"kuniga 140 000 so‘m", tags:["gazon"]},
-  {t:"ProService", typ:"service", city:"Andijon", price:"soatiga 68 000 so‘m", tags:["elektr","usta"]},
-  {t:"FamilyCare", typ:"uy", city:"Samarqand", price:"kuniga 135 000 so‘m", tags:["uy"]}
-];
+  <script>
+    // Demo firmalar (12+)
+    const FIRMS = [
+      {name:'CleanPro',       field:'Tozalash xizmati',  city:'Toshkent',  rating:4.9, phone:'+998901112233'},
+      {name:'Sparkle Team',   field:'Ofis tozalash',     city:'Samarqand', rating:4.8, phone:'+998935551212'},
+      {name:'EcoWash',        field:'Uy tozalash',       city:'Buxoro',    rating:4.7, phone:'+998993334455'},
+      {name:'Shine&Co',       field:'Qurilishdan keyin', city:'Toshkent',  rating:4.8, phone:'+998909009090'},
+      {name:'GardenHelp',     field:'Bog‘ ishlari',      city:'Namangan',  rating:4.6, phone:'+998939191919'},
+      {name:'MoveAssist',     field:'Yuk tashish',       city:'Andijon',   rating:4.7, phone:'+998971010101'},
+      {name:'FloorCare',      field:'Pol yuvish',        city:'Farg‘ona',  rating:4.6, phone:'+998935551010'},
+      {name:'GlassMaster',    field:'Oynalar',           city:'Navoiy',    rating:4.7, phone:'+998902225566'},
+      {name:'FreshHome',      field:'Uy-bekalik',        city:'Xorazm',    rating:4.5, phone:'+998977778899'},
+      {name:'DeepClean',      field:'General tozalash',  city:'Samarqand', rating:4.9, phone:'+998931234567'},
+      {name:'QuickFix',       field:'Mayda ta’mir',      city:'Toshkent',  rating:4.6, phone:'+998909876543'},
+      {name:'Shodlik Servis', field:'Ko‘p yo‘nalish',    city:'Buxoro',    rating:4.7, phone:'+998935500700'}
+    ];
 
-const perPage = 12;
-let page = 1;
+    const listEl = document.getElementById('list');
+    const qEl    = document.getElementById('q');
+    const cityEl = document.getElementById('city');
+    document.getElementById('apply').addEventListener('click', render);
 
-function render(){
-  const q = document.getElementById('q').value.toLowerCase().trim();
-  const type = document.getElementById('type').value;
-  const filtered = firms.filter(f =>
-    (!q || (f.t+f.city+f.price).toLowerCase().includes(q)) &&
-    (!type || f.typ===type)
-  );
-  const list = document.getElementById('list');
-  const pager = document.getElementById('pager');
-  const total = filtered.length;
-  const maxPage = Math.max(1, Math.ceil(total/perPage));
-  if(page>maxPage) page = maxPage;
-  const start = (page-1)*perPage;
-  const chunk = filtered.slice(start, start+perPage);
+    function initials(name){
+      return name.split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase();
+    }
 
-  list.innerHTML = '';
-  chunk.forEach(x=>{
-    const el = document.createElement('div');
-    el.className='card';
-    el.innerHTML = `
-      <div class="av">🏢</div>
-      <div class="meta">
-        <h3>${x.t} ${x.hot?'<span class="badge">Aksiya</span>':''}</h3>
-        <div class="sub">${labelType(x.typ)} • ${x.city}</div>
-        <div class="sub" style="margin-top:4px"><span class="price">${x.price}</span></div>
-        <div class="tags">${x.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>
-      </div>
-      <div><a class="btn" href="./workers.html">Ishchi so‘rash</a></div>`;
-    list.appendChild(el);
-  });
+    function firmCard(f){
+      const params = new URLSearchParams({
+        company: f.name,
+        service: f.field,
+        city: f.city,
+        phone: f.phone
+      }).toString();
 
-  pager.innerHTML = '';
-  for(let i=1;i<=maxPage;i++){
-    const b = document.createElement('button');
-    b.className = 'page'+(i===page?' active':'');
-    b.textContent = i;
-    b.onclick = ()=>{ page=i; render(); window.scrollTo({top:0,behavior:'smooth'}); };
-    pager.appendChild(b);
-  }
-}
+      return `
+        <div class="card">
+          <div class="logo">${initials(f.name)}</div>
+          <div>
+            <div class="name">${f.name}</div>
+            <div class="meta">
+              <span class="rating"><span class="star">★</span> ${f.rating}</span>
+              &nbsp;•&nbsp; ${f.field} • ${f.city}
+            </div>
+            <div class="chips">
+              <span class="chip">obuna: 600 000 so‘m/oy (demo)</span>
+              <span class="chip">tezkor chaqiriq</span>
+            </div>
+          </div>
+          <div class="actions">
+            <a class="btn" href="#" onclick="alert('Batafsil ma’lumot demo rejimida.');return false;">Batafsil</a>
+            <a class="btn primary" target="_blank" href="firm-order.html?${params}">Chaqirish</a>
+          </div>
+        </div>
+      `;
+    }
 
-function labelType(t){
-  if(t==='tozalash') return 'Tozalash firmasi';
-  if(t==='bog') return 'Bog‘ xizmati';
-  if(t==='service') return 'Servis/Usta';
-  if(t==='uy') return 'Uy xizmati';
-  return t;
-}
+    function render(){
+      const q = (qEl.value||'').toLowerCase().trim();
+      const city = cityEl.value;
+      const rows = FIRMS.filter(f=>{
+        const okQ = !q || [f.name,f.field,f.city].join(' ').toLowerCase().includes(q);
+        const okC = !city || f.city===city;
+        return okQ && okC;
+      }).map(firmCard).join('');
+      listEl.innerHTML = rows || `<div class="meta" style="padding:18px">Hech narsa topilmadi.</div>`;
+    }
 
-document.getElementById('apply').onclick = ()=>{ page=1; render(); };
-window.addEventListener('DOMContentLoaded', render);
-</script>
+    render();
+  </script>
 </body>
 </html>
