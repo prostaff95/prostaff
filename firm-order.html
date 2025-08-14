@@ -1,160 +1,153 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="uz">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>PROSTAFF — Firma chaqirish</title>
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>PROSTAFF — Buyurtma (Firma)</title>
   <style>
-    :root{
-      --bg:#0b1733; --card:#121f3f; --muted:#8fa3c9; --text:#e9f0ff;
-      --brand1:#1773ff; --brand2:#00c2ff; --shadow:0 10px 30px rgba(0,0,0,.25);
-    }
-    *{box-sizing:border-box}
-    html,body{margin:0;padding:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial}
-    a{color:inherit;text-decoration:none}
-    .nav{display:flex;gap:16px;align-items:center;justify-content:center;padding:18px 12px;background:linear-gradient(90deg,#0b1733,#0f2150)}
-    .wrap{max-width:760px;margin:24px auto;padding:0 14px}
-    .card{background:var(--card);border-radius:18px;padding:18px;box-shadow:var(--shadow)}
-    .h1{font-size:24px;font-weight:800;margin:0 0 14px}
-    label{display:block;margin:12px 0 6px;color:#c7d7ff}
-    input,textarea,select{width:100%;padding:12px;border:1px solid #2a3b6b;border-radius:12px;background:#0e1a39;color:#fff}
-    textarea{min-height:110px;resize:vertical}
-    .row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-    .btn{margin-top:16px;padding:14px 18px;border-radius:12px;border:0;background:linear-gradient(90deg,var(--brand1),var(--brand2));color:#fff;font-weight:800;width:100%}
-    .ghost{background:#0e1a39;border:1px solid #2a3b6b}
-    .hint{color:var(--muted);font-size:13px;margin-top:6px}
-    .pill{display:inline-block;background:#1b2b56;color:#cfe0ff;padding:6px 10px;border-radius:999px;font-size:12px;margin-right:6px}
-    @media (max-width:640px){ .row{grid-template-columns:1fr} }
+    :root{--bg:#0b1220;--card:#111a2e;--text:#e7eef7;--muted:#93a4bd;--primary:#2d6bff;--primary2:#4aa3ff;}
+    *{box-sizing:border-box} body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial;background:var(--bg);color:var(--text)}
+    .wrap{max-width:720px;margin:0 auto;padding:16px}
+    .top{display:flex;align-items:center;gap:12px;margin:8px 0 16px}
+    .top a{color:#cfe1ff;text-decoration:none;font-size:14px}
+    h1{margin:0 0 12px;font-size:22px}
+    .card{background:var(--card);border:1px solid #1e2b4a;border-radius:14px;padding:16px;box-shadow:0 6px 24px rgba(0,0,0,.35)}
+    label{display:block;font-size:13px;color:var(--muted);margin:10px 0 6px}
+    input,textarea,select,button{width:100%;border-radius:10px;border:1px solid #24345a;background:#0f1730;color:var(--text);padding:12px;font-size:16px;outline:none}
+    textarea{resize:vertical;min-height:90px}
+    .row{display:flex;gap:10px}
+    .row > *{flex:1}
+    .btn{background:linear-gradient(135deg,var(--primary),var(--primary2));border:none;font-weight:600;cursor:pointer}
+    .btn:active{transform:translateY(1px)}
+    .hint{font-size:12px;color:var(--muted)}
+    .ok{background:#0e3a15;border:1px solid #1e6a2a;color:#b8f5c3}
+    .err{background:#3a1212;border:1px solid #692323;color:#ffc9c9}
   </style>
 </head>
 <body>
-  <nav class="nav">
-    <a href="index.html">← Bosh sahifa</a>
-    <a href="services.html">Firmalar</a>
-  </nav>
-
   <div class="wrap">
-    <div class="card">
-      <div class="h1">Firma chaqirish</div>
-      <div id="info"></div>
+    <div class="top"><a href="./services.html">← Orqaga</a></div>
+    <h1>Firma chaqirish</h1>
+    <p class="hint">Qaysi xizmat kerakligini yozing (yoki URL bilan kelgan bo‘lsa — avtomatik turadi), manzil va vaqtni belgilang.</p>
 
+    <form id="orderForm" class="card">
       <div class="row">
         <div>
           <label>Ismingiz</label>
-          <input id="clientName" placeholder="Masalan, Akmal" />
+          <input name="name" type="text" placeholder="Masalan: Sevara" required />
         </div>
         <div>
-          <label>Telefon raqam</label>
-          <input id="clientPhone" placeholder="+998 ** *** ** **" />
+          <label>Telefon</label>
+          <input name="phone" type="tel" placeholder="+998 90 123 45 67" required />
         </div>
       </div>
+
+      <label>Xizmat turi</label>
+      <input name="service" type="text" placeholder="Masalan: Ofis tozalash / Ta’mirlash" required />
 
       <div class="row">
         <div>
-          <label>Sana</label>
-          <input id="date" type="date" />
+          <label>Shahar</label>
+          <input name="city" type="text" placeholder="Masalan: Samarqand" />
         </div>
         <div>
-          <label>Soat</label>
-          <input id="time" type="time" />
+          <label>Sana va vaqt</label>
+          <input name="datetime" type="datetime-local" required />
         </div>
       </div>
 
-      <label>Manzil (ixtiyoriy — ko‘cha/uy/kv.)</label>
-      <input id="address" placeholder="Toshkent, Chilonzor 22, 12-uy, 45-xonadon" />
-
-      <div class="row">
-        <div>
-          <label>Lokatsiya (GPS)</label>
-          <input id="loc" placeholder="Lokatsiya havolasi yoki koordinata" />
-          <div class="hint">“Lokatsiyani ulash” tugmasini bosing — koordinata avtomatik kiritiladi.</div>
-        </div>
-        <div style="display:flex;align-items:end;">
-          <button id="btnGeo" class="btn ghost" type="button">Lokatsiyani ulash</button>
-        </div>
-      </div>
+      <label>Manzil</label>
+      <input name="address" type="text" placeholder="Ko‘cha, uy, mo‘ljal" required />
 
       <label>Izoh</label>
-      <textarea id="note" placeholder="Ish haqida qisqacha: xona soni, maydon, maxsus talablar va h.k."></textarea>
+      <textarea name="note" placeholder="Qisqacha izoh… (masalan, 3 xonali ofis, 2 ishchi kerak)"></textarea>
 
-      <button id="send" class="btn">Buyurtmani yuborish</button>
-      <div class="hint">Tugmani bosgach, buyurtma ma’lumotlari yuboriladi (demo: xabar ko‘rinishida).</div>
-    </div>
+      <label>Lokatsiya (Google Maps URL)</label>
+      <div class="row">
+        <input name="location" type="url" placeholder="https://maps.google.com/?q=..." />
+        <button type="button" id="pickLocation">Lokatsiyani aniqlash</button>
+      </div>
+
+      <div style="height:10px"></div>
+      <button class="btn" type="submit">Chaqirish</button>
+
+      <div id="msg" style="margin-top:10px;display:none" class="ok"></div>
+    </form>
   </div>
 
   <script>
-    // URL dan kelgan parametrlar (services.html → Chaqirish)
-    const qs = new URLSearchParams(location.search);
-    const company = qs.get('company') || 'Firma';
-    const service = qs.get('service') || 'Xizmat';
-    const city    = qs.get('city')    || '';
-    const phone   = qs.get('phone')   || '';
+    // ======= Telegram sozlamalari (SIZNIKI) =======
+    const BOT_TOKEN = '7967067936:AAHJ1cavttlapzs7B9jJkc9unPE-LNYbVZU';
+    const CHAT_ID   = '7692677210';
+    const API_URL   = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
 
-    // Yuqorida firma haqida chiplar
-    document.getElementById('info').innerHTML = `
-      <span class="pill">${company}</span>
-      <span class="pill">${service}</span>
-      ${city ? `<span class="pill">${city}</span>` : ''}
-      ${phone ? `<span class="pill">${phone}</span>` : ''}
-    `;
-
-    // Geolokatsiya → Google Maps link
-    document.getElementById('btnGeo').addEventListener('click', ()=>{
-      if(!navigator.geolocation){ alert("Qurilmada geolokatsiya yo'q."); return; }
-      navigator.geolocation.getCurrentPosition(pos=>{
-        const {latitude, longitude} = pos.coords;
-        const link = `https://maps.google.com/?q=${latitude},${longitude}`;
-        document.getElementById('loc').value = link;
-      }, err=>{
-        alert("Lokatsiya olinmadi: " + err.message);
-      }, {enableHighAccuracy:true, timeout:10000});
-    });
-
-    // Yuborish (demo): xabarni yig‘ib ko‘rsatamiz yoki WhatsAppga yo‘naltirish mumkin
-    document.getElementById('send').addEventListener('click', ()=>{
-      const payload = {
-        company, service, city, phone,
-        clientName:  document.getElementById('clientName').value.trim(),
-        clientPhone: document.getElementById('clientPhone').value.trim(),
-        date:        document.getElementById('date').value,
-        time:        document.getElementById('time').value,
-        address:     document.getElementById('address').value.trim(),
-        location:    document.getElementById('loc').value.trim(),
-        note:        document.getElementById('note').value.trim()
-      };
-
-      // Xabar matni
-      const text = 
-`PROSTAFF orqali chaqiriq:
-Firma: ${payload.company}
-Xizmat: ${payload.service}
-Shahar: ${payload.city}
-
-Mijoz: ${payload.clientName} (${payload.clientPhone})
-Sana/soat: ${payload.date || '—'} ${payload.time || ''}
-Manzil: ${payload.address || '—'}
-Lokatsiya: ${payload.location || '—'}
-
-Izoh: ${payload.note || '—'}`;
-
-      // Demo rejim: alert. Xohlasangiz WhatsAppga yo‘naltiring:
-      // const wa = 'https://wa.me/' + (phone.replace(/\D/g,'')) + '?text=' + encodeURIComponent(text);
-      // location.href = wa;
-
-      alert(text);
-    });
-
-    // Default: bugungi sana/soat
-    (function setDefaults(){
-      const now = new Date();
-      const d = now.toISOString().slice(0,10);
-      const m = String(now.getMinutes()).padStart(2,'0');
-      const h = String(now.getHours()).padStart(2,'0');
-      document.getElementById('date').value = d;
-      document.getElementById('time').value = `${h}:${m}`;
+    // URL’dan ?service=... ni olib formaga qo‘yish
+    (function prefillFromURL(){
+      const p = new URLSearchParams(location.search);
+      const s = p.get('service');
+      if (s) document.querySelector('input[name="service"]').value = s;
     })();
+
+    // Lokatsiya tugmasi
+    const pickBtn = document.getElementById('pickLocation');
+    if (pickBtn) {
+      pickBtn.addEventListener('click', () => {
+        if (!navigator.geolocation) {
+          return alert('Geolokatsiya qurilmada mavjud emas.');
+        }
+        navigator.geolocation.getCurrentPosition(
+          pos => {
+            const { latitude, longitude } = pos.coords;
+            const url = `https://maps.google.com/?q=${latitude},${longitude}`;
+            document.querySelector('input[name="location"]').value = url;
+          },
+          err => alert('Lokatsiya olinmadi: ' + err.message),
+          { enableHighAccuracy:true, timeout:10000 }
+        );
+      });
+    }
+
+    // Formani yuborish -> Telegram
+    const form = document.getElementById('orderForm');
+    const msgBox = document.getElementById('msg');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const fd = new FormData(form);
+      const d  = Object.fromEntries(fd.entries());
+
+      const lines = [
+        '🆕 <b>Yangi buyurtma (Firma)</b>',
+        d.service  ? `🧹 Xizmat: ${d.service}` : '',
+        d.name     ? `👤 Mijoz: ${d.name}` : '',
+        d.phone    ? `📞 Tel: ${d.phone}` : '',
+        d.city     ? `🌆 Shahar: ${d.city}` : '',
+        d.address  ? `📍 Manzil: ${d.address}` : '',
+        d.datetime ? `🗓 Sana/soat: ${d.datetime}` : '',
+        d.note     ? `📝 Izoh: ${d.note}` : '',
+        d.location ? `📎 Lokatsiya: ${d.location}` : '',
+        `⏱ ${new Date().toLocaleString('uz-UZ')}`
+      ].filter(Boolean).join('\n');
+
+      try {
+        const res = await fetch(API_URL, {
+          method: 'POST',
+          headers: {'Content-Type':'application/json'},
+          body: JSON.stringify({ chat_id: CHAT_ID, text: lines, parse_mode: 'HTML' })
+        });
+        if (!res.ok) throw new Error('Telegram API xatosi');
+
+        msgBox.className = 'ok';
+        msgBox.textContent = '✅ Chaqiruv yuborildi! Tez orada operator bog‘lanadi.';
+        msgBox.style.display = 'block';
+        form.reset();
+      } catch (err) {
+        console.error(err);
+        msgBox.className = 'err';
+        msgBox.textContent = '❌ Xatolik! Iltimos, keyinroq yana urinib ko‘ring.';
+        msgBox.style.display = 'block';
+      }
+    });
   </script>
 </body>
 </html>
