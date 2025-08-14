@@ -1,138 +1,152 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="uz">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Buyurtma berish — PROSTAFF</title>
-  <link rel="stylesheet" href="style.css" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>PROSTAFF — Buyurtma (Ishchi)</title>
   <style>
-    .page { max-width: 900px; margin: 0 auto; padding: 16px; }
-    .hero { color: #fff; background: linear-gradient(135deg,#0b3b8f,#0e5bd7); padding: 20px; border-radius: 16px; margin-bottom: 16px; }
-    .form { background:#0e1730; border:1px solid #1e2a55; border-radius:16px; padding:16px; }
-    .row { display:grid; gap:12px; grid-template-columns: 1fr; }
-    @media(min-width:720px){ .row-2 { grid-template-columns: 1fr 1fr; } }
-    .field label { color:#9fb3ff; font-size:14px; display:block; margin-bottom:6px; }
-    .input, .textarea, .select { width:100%; padding:12px 14px; border-radius:12px; border:1px solid #2a3a70; background:#0b1330; color:#fff; }
-    .textarea{ min-height:110px; resize:vertical; }
-    .hint { color:#7f93d3; font-size:12px; margin-top:4px; }
-    .btnbar{ display:flex; gap:12px; flex-wrap:wrap; margin-top:12px;}
-    .btn{ background:#2b70ff; color:#fff; padding:12px 16px; border:none; border-radius:12px; font-weight:700;}
-    .btn--ghost{ background:transparent; border:1px solid #2b70ff; color:#cbe0ff; }
-    .maplink{ color:#88c7ff; word-break:break-all; }
-    body { background:#0a1124; font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif; color:#e9f0ff; }
-    a.back{color:#9fb3ff; text-decoration:none; display:inline-flex; align-items:center; gap:6px; margin-bottom:12px;}
+    :root{--bg:#0b1220;--card:#111a2e;--text:#e7eef7;--muted:#93a4bd;--primary:#2d6bff;--primary2:#4aa3ff;}
+    *{box-sizing:border-box} body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial;background:var(--bg);color:var(--text)}
+    .wrap{max-width:720px;margin:0 auto;padding:16px}
+    .top{display:flex;align-items:center;gap:12px;margin:8px 0 16px}
+    .top a{color:#cfe1ff;text-decoration:none;font-size:14px}
+    h1{margin:0 0 12px;font-size:22px}
+    .card{background:var(--card);border:1px solid #1e2b4a;border-radius:14px;padding:16px;box-shadow:0 6px 24px rgba(0,0,0,.35)}
+    label{display:block;font-size:13px;color:var(--muted);margin:10px 0 6px}
+    input,textarea,select,button{width:100%;border-radius:10px;border:1px solid #24345a;background:#0f1730;color:var(--text);padding:12px;font-size:16px;outline:none}
+    textarea{resize:vertical;min-height:90px}
+    .row{display:flex;gap:10px}
+    .row > *{flex:1}
+    .btn{background:linear-gradient(135deg,var(--primary),var(--primary2));border:none;font-weight:600;cursor:pointer}
+    .btn:active{transform:translateY(1px)}
+    .hint{font-size:12px;color:var(--muted)}
+    .ok{background:#0e3a15;border:1px solid #1e6a2a;color:#b8f5c3}
+    .err{background:#3a1212;border:1px solid #692323;color:#ffc9c9}
   </style>
 </head>
 <body>
-  <div class="page">
-    <a class="back" href="workers.html">← Ishchilar</a>
+  <div class="wrap">
+    <div class="top"><a href="./workers.html">← Orqaga</a></div>
+    <h1>Ishchi uchun buyurtma</h1>
+    <p class="hint">Iltimos, ma’lumotlarni to‘ldiring. “Lokatsiyani aniqlash” tugmasi sizning hozirgi GPS manzilingizdan Google Xarita havolasini qo‘yib beradi.</p>
 
-    <div class="hero">
-      <h1 id="heroTitle">Buyurtma berish</h1>
-      <p id="heroSub"></p>
-    </div>
-
-    <form class="form" id="orderForm">
-      <div class="row row-2">
-        <div class="field">
-          <label>Ishchi</label>
-          <input id="f-name" class="input" type="text" readonly />
-          <div class="hint">Ishchi ismi avtomatik to‘ldiriladi</div>
+    <form id="orderForm" class="card">
+      <div class="row">
+        <div>
+          <label>Ismingiz</label>
+          <input name="name" type="text" placeholder="Masalan: Diyor" required />
         </div>
-        <div class="field">
-          <label>Xizmat turi</label>
-          <input id="f-service" class="input" type="text" />
+        <div>
+          <label>Telefon</label>
+          <input name="phone" type="tel" placeholder="+998 90 123 45 67" required />
         </div>
       </div>
 
-      <div class="row row-2">
-        <div class="field">
-          <label>Sana</label>
-          <input id="f-date" class="input" type="date" required />
-        </div>
-        <div class="field">
-          <label>Soat</label>
-          <input id="f-time" class="input" type="time" required />
-        </div>
-      </div>
+      <label>Ishchi</label>
+      <input name="worker" type="text" placeholder="Ishchi nomi (avtomatik to‘lishi mumkin)" />
 
       <div class="row">
-        <div class="field">
-          <label>Manzil yoki lokatsiya (Google Maps havola)</label>
-          <input id="f-location" class="input" type="url" placeholder="https://maps.google.com/..." />
-          <div class="btnbar">
-            <button type="button" class="btn--ghost btn" id="getGeo">Lokatsiyani olish</button>
-            <span id="geoHint" class="hint"></span>
-          </div>
+        <div>
+          <label>Shahar</label>
+          <input name="city" type="text" placeholder="Masalan: Toshkent" />
+        </div>
+        <div>
+          <label>Sana va vaqt</label>
+          <input name="datetime" type="datetime-local" required />
         </div>
       </div>
 
+      <label>Manzil</label>
+      <input name="address" type="text" placeholder="Ko‘cha, uy, mo‘ljal" required />
+
+      <label>Izoh</label>
+      <textarea name="note" placeholder="Qisqacha izoh… (masalan, 2 xonali uy, 4 soat)"></textarea>
+
+      <label>Lokatsiya (Google Maps URL)</label>
       <div class="row">
-        <div class="field">
-          <label>Ish haqida qisqacha izoh</label>
-          <textarea id="f-notes" class="textarea" placeholder="Masalan: 2 xonali uy, umumiy tozalash. Oila uyda."></textarea>
-        </div>
+        <input name="location" type="url" placeholder="https://maps.google.com/?q=..." />
+        <button type="button" id="pickLocation">Lokatsiyani aniqlash</button>
       </div>
 
-      <div class="btnbar">
-        <button class="btn" type="submit">Buyurtmani yuborish</button>
-        <a class="btn btn--ghost" href="workers.html">Bekor qilish</a>
-      </div>
+      <div style="height:10px"></div>
+      <button class="btn" type="submit">Buyurtma berish</button>
+
+      <div id="msg" style="margin-top:10px;display:none" class="ok"></div>
     </form>
   </div>
 
   <script>
-    // URL'dan ishchi nomi/xizmati
-    const p = new URLSearchParams(location.search);
-    const workerName = p.get('name') || 'Ishchi';
-    const service = p.get('service') || 'Xizmat';
-    const price = p.get('price') || '';
-    document.getElementById('heroTitle').textContent = `Buyurtma — ${workerName}`;
-    document.getElementById('heroSub').textContent = `${service}${price ? ' • ' + price : ''}`;
-    document.getElementById('f-name').value = workerName;
-    document.getElementById('f-service').value = service;
+    // ======= Telegram sozlamalari (SIZNIKI) =======
+    const BOT_TOKEN = '7967067936:AAHJ1cavttlapzs7B9jJkc9unPE-LNYbVZU';
+    const CHAT_ID   = '7692677210';
+    const API_URL   = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
 
-    // Geolokatsiya tugmasi
-    const getGeoBtn = document.getElementById('getGeo');
-    const geoHint = document.getElementById('geoHint');
-    getGeoBtn.addEventListener('click', () => {
-      if (!navigator.geolocation) {
-        geoHint.textContent = 'Geolokatsiya qurilmangizda yoqilmagan.';
-        return;
-      }
-      geoHint.textContent = 'Lokatsiya olinmoqda…';
-      navigator.geolocation.getCurrentPosition(pos => {
-        const { latitude, longitude } = pos.coords;
-        const link = `https://maps.google.com/?q=${latitude},${longitude}`;
-        document.getElementById('f-location').value = link;
-        geoHint.innerHTML = `Topildi: <a class="maplink" href="${link}" target="_blank">${latitude.toFixed(5)}, ${longitude.toFixed(5)}</a>`;
-      }, err => {
-        geoHint.textContent = 'Lokatsiyani olish rad etildi yoki xatolik yuz berdi.';
-      }, { enableHighAccuracy: true, timeout: 10000 });
-    });
+    // URL’dan ?worker=... ni olib formaga qo‘yish
+    (function prefillFromURL(){
+      const p = new URLSearchParams(location.search);
+      const w = p.get('worker');
+      if (w) document.querySelector('input[name="worker"]').value = w;
+    })();
 
-    // Yuborish (hozircha preview/confirm). Backend qo‘shsangiz shu yerdan jo‘natasiz.
-    document.getElementById('orderForm').addEventListener('submit', (e) => {
+    // Lokatsiya tugmasi
+    const pickBtn = document.getElementById('pickLocation');
+    if (pickBtn) {
+      pickBtn.addEventListener('click', () => {
+        if (!navigator.geolocation) {
+          return alert('Geolokatsiya qurilmada mavjud emas.');
+        }
+        navigator.geolocation.getCurrentPosition(
+          pos => {
+            const { latitude, longitude } = pos.coords;
+            const url = `https://maps.google.com/?q=${latitude},${longitude}`;
+            document.querySelector('input[name="location"]').value = url;
+          },
+          err => alert('Lokatsiya olinmadi: ' + err.message),
+          { enableHighAccuracy:true, timeout:10000 }
+        );
+      });
+    }
+
+    // Formani yuborish -> Telegram
+    const form = document.getElementById('orderForm');
+    const msgBox = document.getElementById('msg');
+
+    form.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const summary = {
-        ishchi: document.getElementById('f-name').value,
-        xizmat: document.getElementById('f-service').value,
-        sana: document.getElementById('f-date').value,
-        soat: document.getElementById('f-time').value,
-        lokatsiya: document.getElementById('f-location').value,
-        izoh: document.getElementById('f-notes').value
-      };
-      alert(
-        `Buyurtma qabul qilindi!\n\n` +
-        `Ishchi: ${summary.ishchi}\n` +
-        `Xizmat: ${summary.xizmat}\n` +
-        `Sana/soat: ${summary.sana} ${summary.soat}\n` +
-        `Lokatsiya: ${summary.lokatsiya || '-'}\n` +
-        `Izoh: ${summary.izoh || '-'}\n\n` +
-        `Keyingi qadam: bu ma'lumotlarni Firebase'ga saqlashni yoqishingiz mumkin.`
-      );
-      // TODO: Firebase/Telegram/EmailJS orqali jo‘natish
-      window.location.href = 'workers.html';
+      const fd = new FormData(form);
+      const d  = Object.fromEntries(fd.entries());
+
+      const lines = [
+        '🆕 <b>Yangi buyurtma (Ishchi)</b>',
+        d.worker   ? `👷 Ishchi: ${d.worker}` : '',
+        d.name     ? `👤 Mijoz: ${d.name}` : '',
+        d.phone    ? `📞 Tel: ${d.phone}` : '',
+        d.city     ? `🌆 Shahar: ${d.city}` : '',
+        d.address  ? `📍 Manzil: ${d.address}` : '',
+        d.datetime ? `🗓 Sana/soat: ${d.datetime}` : '',
+        d.note     ? `📝 Izoh: ${d.note}` : '',
+        d.location ? `📎 Lokatsiya: ${d.location}` : '',
+        `⏱ ${new Date().toLocaleString('uz-UZ')}`
+      ].filter(Boolean).join('\n');
+
+      try {
+        const res = await fetch(API_URL, {
+          method: 'POST',
+          headers: {'Content-Type':'application/json'},
+          body: JSON.stringify({ chat_id: CHAT_ID, text: lines, parse_mode: 'HTML' })
+        });
+        if (!res.ok) throw new Error('Telegram API xatosi');
+
+        msgBox.className = 'ok';
+        msgBox.textContent = '✅ Buyurtma yuborildi! Tez orada operator bog‘lanadi.';
+        msgBox.style.display = 'block';
+        form.reset();
+      } catch (err) {
+        console.error(err);
+        msgBox.className = 'err';
+        msgBox.textContent = '❌ Xatolik! Iltimos, keyinroq yana urinib ko‘ring.';
+        msgBox.style.display = 'block';
+      }
     });
   </script>
 </body>
